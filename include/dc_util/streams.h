@@ -1,5 +1,5 @@
-#ifndef UNTITLED5_DC_STREAMS_H
-#define UNTITLED5_DC_STREAMS_H
+#ifndef LIBDC_UTIL_STREAMS_H
+#define LIBDC_UTIL_STREAMS_H
 
 
 /*
@@ -36,5 +36,5 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(uint8_t_filter_func filte
 void dc_stream_copy_info_destroy(struct dc_stream_copy_info **info);
 
 
-#endif
+#endif // LIBDC_UTIL_STREAMS_H
 

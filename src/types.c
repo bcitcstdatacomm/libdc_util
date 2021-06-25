@@ -1,7 +1,3 @@
-#ifndef LIBDC_UTIL_PATH_H
-#define LIBDC_UTIL_PATH_H
-
-
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -19,7 +15,22 @@
  */
 
 
-void expand_path(char **expanded_path, const char *path);
+#include <math.h>
+#include "types.h"
 
 
-#endif // LIBDC_UTIL_PATH_H
+__attribute__ ((unused)) off_t dc_max_off_t(void)
+{
+    static size_t bits = sizeof(off_t) * 8;
+    long double   largest_signed;
+    long double   largest_unsigned;
+    off_t         max;
+
+    largest_signed   = powl(2, bits);
+    largest_unsigned = largest_signed / 2;
+    max              = (off_t)(largest_unsigned - 1);
+
+    return max;
+}
+
+

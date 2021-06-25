@@ -1,5 +1,5 @@
-#ifndef DC_BITS_H
-#define DC_BITS_H
+#ifndef LIBDC_UTIL_BITS_H
+#define LIBDC_UTIL_BITS_H
 
 
 /*
@@ -40,4 +40,4 @@ void dc_from_printable_binary32(const char printable[static 33], bool bits[stati
 void dc_from_printable_binary64(const char printable[static 65], bool bits[static 64]);
 
 
-#endif
+#endif // LIBDC_UTIL_BITS_H

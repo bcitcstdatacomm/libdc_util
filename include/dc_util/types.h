@@ -1,5 +1,5 @@
-#ifndef LIBDC_UTIL_PATH_H
-#define LIBDC_UTIL_PATH_H
+#ifndef LIBDC_UTIL_TYPES_H
+#define LIBDC_UTIL_TYPES_H
 
 
 /*
@@ -19,7 +19,10 @@
  */
 
 
-void expand_path(char **expanded_path, const char *path);
+#include <sys/types.h>
 
 
-#endif // LIBDC_UTIL_PATH_H
+off_t dc_max_off_t(void);
+
+
+#endif //LIBDC_UTIL_TYPES_H
