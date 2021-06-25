@@ -33,4 +33,5 @@ void expand_path(char **expanded_path, const char *path)
     root_length    = strlen(root);
     *expanded_path = malloc((root_length + 1) * sizeof(char));
     sprintf(*expanded_path, "%s", root);
+    wordfree(&expanded);
 }
