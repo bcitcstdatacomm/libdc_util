@@ -16,9 +16,9 @@
 
 
 #include "bits.h"
-#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 
 static void to_binary(uint32_t val, bool *bits, const uint32_t *masks, size_t count);

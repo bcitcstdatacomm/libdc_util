@@ -19,7 +19,15 @@
  */
 
 
-void expand_path(char **expanded_path, const char *path);
+#include <dc_posix/posix_env.h>
+
+
+/**
+ *
+ * @param expanded_path
+ * @param path
+ */
+void expand_path(const struct dc_posix_env *env, char **expanded_path, const char *path);
 
 
 #endif // LIBDC_UTIL_PATH_H

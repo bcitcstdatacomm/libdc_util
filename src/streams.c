@@ -16,8 +16,8 @@
 
 
 #include "streams.h"
-#include <stdlib.h>
-#include <unistd.h>
+#include <dc_posix/stdlib.h>
+#include <dc_posix/unistd.h>
 
 
 void dc_stream_filter_uint8_t(uint8_t *data, size_t *count, uint8_t_filter_func test)
@@ -65,11 +65,17 @@ struct dc_stream_copy_info
     void *out_data;
 };
 
-struct dc_stream_copy_info *dc_stream_copy_info_create(uint8_t_filter_func filter, uint8_t_consumer_func in_consumer, void *in_data, uint8_t_consumer_func out_consumer, void *out_data)
+struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env *env, uint8_t_filter_func filter, uint8_t_consumer_func in_consumer, void *in_data, uint8_t_consumer_func out_consumer, void *out_data)
 {
     struct dc_stream_copy_info *info;
+    int err;
 
-    info = malloc(sizeof(struct dc_stream_copy_info));
+    info = dc_malloc(env, &err, sizeof(struct dc_stream_copy_info));
+
+    if(info == NULL)
+    {
+    }
+
     info->in_position  = 0;
     info->out_position = 0;
     info->filter       = filter;
@@ -81,20 +87,21 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(uint8_t_filter_func filte
     return info;
 }
 
-void dc_stream_copy_info_destroy(struct dc_stream_copy_info **info)
+void dc_stream_copy_info_destroy(const struct dc_posix_env *env, struct dc_stream_copy_info **info)
 {
-    free(*info);
+    dc_free(env, *info);
     *info = NULL;
 }
 
-void dc_stream_copy(int fd_in, int fd_out, size_t buffer_size, struct dc_stream_copy_info *info)
+void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_t buffer_size, struct dc_stream_copy_info *info)
 {
     uint8_t *buffer;
-    ssize_t len;
+    ssize_t  len;
+    int      err;
 
-    buffer = calloc(1, buffer_size);
+    buffer = dc_malloc(env, &err, buffer_size);
 
-    while((len = read(fd_in, buffer, buffer_size)) > 0)
+    while((len = dc_read(env, &err, fd_in, buffer, buffer_size)) > 0)
     {
         // TODO: what if len is -1?
 
@@ -109,7 +116,7 @@ void dc_stream_copy(int fd_in, int fd_out, size_t buffer_size, struct dc_stream_
         write(fd_out, buffer, len2);
     }
 
-    free(buffer);
+    dc_free(env, buffer);
 }
 
 

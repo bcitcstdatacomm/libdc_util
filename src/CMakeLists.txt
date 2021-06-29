@@ -1,17 +1,30 @@
 # Note that headers are optional, and do not affect add_library, but they will not
 # show up in IDEs unless they are listed in add_library.
 
-# Get header files
-file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${libdc_util_SOURCE_DIR}/include/dc_util/*.h")
+set(HEADER_LIST
+        "${libdc_util_SOURCE_DIR}/include/dc_util/bits.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/path.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/streams.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/types.h"
+        )
 
-# Get source files
-file(GLOB SOURCE_LIST CONFIGURE_DEPENDS "${libdc_util_SOURCE_DIR}/src/*.c")
+set(SOURCE_LIST
+        "bits.c"
+        "path.c"
+        "streams.c"
+        "types.c"
+        )
 
 # Make an static library
 add_library(dc_util SHARED ${SOURCE_LIST} ${HEADER_LIST})
 target_include_directories(dc_util PRIVATE ../include/dc_util)
 target_include_directories(dc_util PRIVATE /usr/local/include)
 target_link_directories(dc_util PRIVATE /usr/local/lib)
+
+find_library(LIBDC_POSIX dc_posix REQUIRED)
+if(LIBDC_POSIX)
+    target_link_libraries(dc_util ${LIBDC_POSIX})
+endif()
 
 # All users of this library will need at least C11
 target_compile_features(dc_util PUBLIC c_std_11)

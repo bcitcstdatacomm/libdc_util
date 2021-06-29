@@ -22,6 +22,10 @@
 #include <sys/types.h>
 
 
+/**
+ *
+ * @return
+ */
 off_t dc_max_off_t(void);
 
 

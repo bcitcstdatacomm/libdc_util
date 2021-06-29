@@ -22,21 +22,116 @@
 #include <stdbool.h>
 
 
+/**
+ *
+ * @param byte
+ * @param bits
+ */
 void dc_to_binary8(uint8_t byte, bool bits[static 8]);
+
+/**
+ *
+ * @param byte
+ * @param bits
+ */
 void dc_to_binary16(uint16_t byte, bool bits[static 16]);
+
+/**
+ *
+ * @param byte
+ * @param bits
+ */
 void dc_to_binary32(uint32_t byte, bool bits[static 32]);
+
+/**
+ *
+ * @param byte
+ * @param bits
+ */
 void dc_to_binary64(uint64_t byte, bool bits[static 64]);
+
+/**
+ *
+ * @param bits
+ * @param val
+ */
 void dc_from_binary8(const bool bits[static 8], uint8_t *val);
+
+/**
+ *
+ * @param bits
+ * @param val
+ */
 void dc_from_binary16(const bool bits[static 16], uint16_t *val);
+
+/**
+ *
+ * @param bits
+ * @param val
+ */
 void dc_from_binary32(const bool bits[static 32], uint32_t *val);
+
+/**
+ *
+ * @param bits
+ * @param val
+ */
 void dc_from_binary64(const bool bits[static 64], uint64_t *val);
+
+/**
+ *
+ * @param bits
+ * @param printable
+ */
 void dc_to_printable_binary8(const bool bits[static 8], char printable[static 9]);
+
+/**
+ *
+ * @param bits
+ * @param printable
+ */
 void dc_to_printable_binary16(const bool bits[static 16], char printable[static 17]);
+
+/**
+ *
+ * @param bits
+ * @param printable
+ */
 void dc_to_printable_binary32(const bool bits[static 32], char printable[static 33]);
+
+/**
+ *
+ * @param bits
+ * @param printable
+ */
 void dc_to_printable_binary64(const bool bits[static 64], char printable[static 65]);
+
+/**
+ *
+ * @param printable
+ * @param bits
+ */
 void dc_from_printable_binary8(const char printable[static 9], bool bits[static 8]);
+
+/**
+ *
+ * @param printable
+ * @param bits
+ */
 void dc_from_printable_binary16(const char printable[static 17], bool bits[static 16]);
+
+/**
+ *
+ * @param printable
+ * @param bits
+ */
 void dc_from_printable_binary32(const char printable[static 33], bool bits[static 32]);
+
+/**
+ *
+ * @param printable
+ * @param bits
+ */
 void dc_from_printable_binary64(const char printable[static 65], bool bits[static 64]);
 
 

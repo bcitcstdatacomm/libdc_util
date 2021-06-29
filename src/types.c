@@ -19,16 +19,21 @@
 #include "types.h"
 
 
-__attribute__ ((unused)) off_t dc_max_off_t(void)
+__attribute__ ((unused)) inline off_t dc_max_off_t(void)
 {
-    static size_t bits = sizeof(off_t) * 8;
-    long double   largest_signed;
-    long double   largest_unsigned;
-    off_t         max;
+    static off_t max = 0;
 
-    largest_signed   = powl(2, bits);
-    largest_unsigned = largest_signed / 2;
-    max              = (off_t)(largest_unsigned - 1);
+    if(max == 0)
+    {
+        size_t      bits;
+        long double largest_signed;
+        long double largest_unsigned;
+
+        bits             = sizeof(off_t) * 8;
+        largest_signed   = powl(2, bits);
+        largest_unsigned = (largest_signed / 2) - 1;
+        max              = (off_t)largest_unsigned;
+    }
 
     return max;
 }
