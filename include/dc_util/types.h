@@ -19,7 +19,9 @@
  */
 
 
+#include <dc_posix/posix_env.h>
 #include <sys/types.h>
+#include <stdint.h>
 
 
 /**
@@ -27,6 +29,7 @@
  * @return
  */
 off_t dc_max_off_t(void);
+uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char *str, int base);
 
 
 #endif //LIBDC_UTIL_TYPES_H

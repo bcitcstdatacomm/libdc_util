@@ -15,8 +15,11 @@
  */
 
 
-#include <math.h>
 #include "types.h"
+#include <dc_posix/inttypes.h>
+#include <errno.h>
+#include <math.h>
+#include <stdio.h>
 
 
 __attribute__ ((unused)) inline off_t dc_max_off_t(void)
@@ -39,3 +42,23 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(void)
 }
 
 
+uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char *str, int base)
+{
+    char      *endptr;
+    uintmax_t  value;
+
+    value = dc_strtoumax(env, err, str, &endptr, base);
+
+    if(*err != 0)
+    {
+        value = 0;
+    }
+
+    if(value > UINT16_MAX)
+    {
+        *err  = ERANGE;
+        value = 0;
+    }
+
+    return (uint16_t)value;
+}
