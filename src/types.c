@@ -36,13 +36,8 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(void)
         bits              = sizeof(off_t) * 8;
         largest_signed    = powl(2, bits);
         largest_unsignedA = (largest_signed / 2);
-        largest_unsignedB = largest_unsignedA - 1;
+        largest_unsignedB = largest_unsignedA - 10000.0L; // this fixes a valgrind bug - not happy should be -1.0L
         max               = (off_t)largest_unsignedB;
-        printf("bits              %zu\n", bits);
-        printf("largest_signed    %Lf\n", largest_signed);
-        printf("largest_unsignedA %Lf\n", largest_unsignedA);
-        printf("largest_unsignedB %Lf\n", largest_unsignedB);
-        printf("max               %lld\n", max);
     }
 
     return max;
