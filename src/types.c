@@ -30,13 +30,13 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(void)
     {
         size_t      bits;
         long double largest_signed;
-        long double largest_unsignedA;
-        long double largest_unsignedB;
+        uintmax_t   largest_unsignedA;
+        uintmax_t   largest_unsignedB;
 
         bits              = sizeof(off_t) * 8;
         largest_signed    = powl(2, bits);
-        largest_unsignedA = (largest_signed / 2);
-        largest_unsignedB = largest_unsignedA - 10000.0L; // this fixes a valgrind bug - not happy should be -1.0L
+        largest_unsignedA = (uintmax_t)(largest_signed / 2);
+        largest_unsignedB = largest_unsignedA - 1;
         max               = (off_t)largest_unsignedB;
     }
 
