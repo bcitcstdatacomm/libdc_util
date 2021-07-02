@@ -21,6 +21,10 @@ target_include_directories(dc_util PRIVATE ../include/dc_util)
 target_include_directories(dc_util PRIVATE /usr/local/include)
 target_link_directories(dc_util PRIVATE /usr/local/lib)
 
+set_target_properties(dc_util  PROPERTIES
+        VERSION ${PROJECT_VERSION}
+        SOVERSION ${PROJECT_VERSION_MAJOR})
+
 find_library(LIBDC_POSIX dc_posix REQUIRED)
 if(LIBDC_POSIX)
     target_link_libraries(dc_util ${LIBDC_POSIX})
@@ -28,6 +32,7 @@ endif()
 
 # All users of this library will need at least C11
 target_compile_features(dc_util PUBLIC c_std_11)
+target_compile_options(dc_util PRIVATE -g -fPIC)
 target_compile_options(dc_util PRIVATE -fstack-protector-all -ftrapv)
 target_compile_options(dc_util PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(dc_util PRIVATE -Wdouble-promotion -Wformat-nonliteral -Wformat-security -Wformat-y2k -Wnull-dereference -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wunused-local-typedefs -Wstrict-overflow=5 -Wmissing-noreturn -Walloca -Wfloat-equal -Wdeclaration-after-statement -Wshadow -Wpointer-arith -Wabsolute-value -Wundef -Wexpansion-to-defined -Wunused-macros -Wno-endif-labels -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wdangling-else -Wdate-time -Wempty-body -Wsign-conversion -Wfloat-conversion -Waggregate-return -Wstrict-prototypes -Wold-style-definition -Wmissing-prototypes -Wmissing-declarations -Wpacked -Wpadded -Wredundant-decls -Wnested-externs -Winline -Winvalid-pch -Wlong-long -Wvariadic-macros -Wdisabled-optimization -Wstack-protector -Woverlength-strings )
