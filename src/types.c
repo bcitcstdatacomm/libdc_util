@@ -36,6 +36,10 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(void)
         largest_signed   = powl(2, bits);
         largest_unsigned = (largest_signed / 2) - 1;
         max              = (off_t)largest_unsigned;
+        printf("bits             %zu\n", bits);
+        printf("largest_signed   %Lf\n", largest_signed);
+        printf("largest_unsigned %Lf\n", largest_unsigned);
+        printf("max              %lld\n", max);
     }
 
     return max;
