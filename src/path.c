@@ -29,6 +29,7 @@ void expand_path(const struct dc_posix_env *env, char **expanded_path, const cha
     size_t     root_length;
     int        err;
 
+    DC_TRACE(env);
     dc_wordexp(env, &err, path, &expanded, 0);
 
     if(err != 0)

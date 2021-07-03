@@ -22,6 +22,7 @@
  */
 
 
+#include <dc_posix/posix_env.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -30,29 +31,35 @@
 struct dc_stream_copy_info;
 
 
-typedef bool (*uint8_t_filter_func)(uint8_t data);
-typedef void (*uint8_t_consumer_func)(uint8_t item, size_t line_position, size_t line_count, size_t file_position, void *data);
+typedef bool (*uint8_t_filter_func)(const struct dc_posix_env *env, uint8_t data);
+typedef void (*uint8_t_consumer_func)(const struct dc_posix_env *env, uint8_t item, size_t line_position, size_t line_count, size_t file_position, void *data);
+
 
 /**
  *
+ * @param env
  * @param data
  * @param count
  * @param test
  */
-void dc_stream_filter_uint8_t(uint8_t *data, size_t *count, uint8_t_filter_func test);
+void dc_stream_filter_uint8_t(const struct dc_posix_env *env, uint8_t *data, size_t *count, uint8_t_filter_func test);
+
 
 /**
  *
+ * @param env
  * @param data
  * @param count
  * @param position
  * @param apply
  * @param arg
  */
-void dc_stream_for_each_uint8_t(const uint8_t *data, size_t count, size_t position, uint8_t_consumer_func apply, void *arg);
+void dc_stream_for_each_uint8_t(const struct dc_posix_env *env, const uint8_t *data, size_t count, size_t position, uint8_t_consumer_func apply, void *arg);
+
 
 /**
  *
+ * @param env
  * @param fd_in
  * @param fd_out
  * @param buffer_size
@@ -60,8 +67,10 @@ void dc_stream_for_each_uint8_t(const uint8_t *data, size_t count, size_t positi
  */
 void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_t buffer_size, struct dc_stream_copy_info *info);
 
+
 /**
  *
+ * @param env
  * @param filter
  * @param in_consumer
  * @param in_data
@@ -71,8 +80,10 @@ void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_
  */
 struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env *env, uint8_t_filter_func filter, uint8_t_consumer_func in_consumer, void *in_data, uint8_t_consumer_func out_consumer, void *out_data);
 
+
 /**
  *
+ * @param env
  * @param info
  */
 void dc_stream_copy_info_destroy(const struct dc_posix_env *env, struct dc_stream_copy_info **info);

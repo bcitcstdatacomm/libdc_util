@@ -22,9 +22,11 @@
 #include <stdio.h>
 
 
-__attribute__ ((unused)) inline off_t dc_max_off_t(void)
+__attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env)
 {
     static off_t max = 0;
+
+    DC_TRACE(env);
 
     if(max == 0)
     {
@@ -49,6 +51,7 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char
     char      *endptr;
     uintmax_t  value;
 
+    DC_TRACE(env);
     value = dc_strtoumax(env, err, str, &endptr, base);
 
     if(*err != 0)

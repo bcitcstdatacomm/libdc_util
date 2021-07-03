@@ -3,6 +3,7 @@
 
 set(HEADER_LIST
         "${libdc_util_SOURCE_DIR}/include/dc_util/bits.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/dump.h"
         "${libdc_util_SOURCE_DIR}/include/dc_util/path.h"
         "${libdc_util_SOURCE_DIR}/include/dc_util/streams.h"
         "${libdc_util_SOURCE_DIR}/include/dc_util/types.h"
@@ -10,6 +11,7 @@ set(HEADER_LIST
 
 set(SOURCE_LIST
         "bits.c"
+        "dump.c"
         "path.c"
         "streams.c"
         "types.c"

@@ -1,5 +1,5 @@
-#ifndef LIBDC_UTIL_TYPES_H
-#define LIBDC_UTIL_TYPES_H
+#ifndef LIBDC_UTIL_DUMP_H
+#define LIBDC_UTIL_DUMP_H
 
 
 /*
@@ -19,27 +19,41 @@
  */
 
 
-#include <dc_posix/posix_env.h>
-#include <sys/types.h>
+#include <dc_posix/stdlib.h>
 #include <stdint.h>
+#include <stddef.h>
+#include <sys/types.h>
+
+
+struct dc_dump_info;
 
 
 /**
  *
  * @param env
+ * @param fd
+ * @param file_size
  * @return
  */
-off_t dc_max_off_t(const struct dc_posix_env *env);
+struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, int fd, off_t file_size);
 
 /**
  *
  * @param env
- * @param err
- * @param str
- * @param base
- * @return
+ * @param pinfo
  */
-uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char *str, int base);
+void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **pinfo);
+
+/**
+ *
+ * @param env
+ * @param item
+ * @param line_position
+ * @param count
+ * @param file_position
+ * @param arg
+ */
+void dc_dump_dumper(const struct dc_posix_env *env, uint8_t item, size_t line_position, size_t count, size_t file_position, void *arg);
 
 
-#endif //LIBDC_UTIL_TYPES_H
+#endif // LIBDC_UTIL_DUMP_H

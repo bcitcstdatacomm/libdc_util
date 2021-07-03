@@ -20,8 +20,10 @@
 #include <dc_posix/unistd.h>
 
 
-void dc_stream_filter_uint8_t(uint8_t *data, size_t *count, uint8_t_filter_func test)
+void dc_stream_filter_uint8_t(const struct dc_posix_env *env, uint8_t *data, size_t *count, uint8_t_filter_func test)
 {
+    DC_TRACE(env);
+
     if(test)
     {
         size_t new_count;
@@ -30,7 +32,7 @@ void dc_stream_filter_uint8_t(uint8_t *data, size_t *count, uint8_t_filter_func 
 
         for(size_t i = 0; i < *count; i++)
         {
-            if(test(data[i]))
+            if(test(env, data[i]))
             {
                 data[new_count] = data[i];
                 new_count++;
@@ -42,13 +44,15 @@ void dc_stream_filter_uint8_t(uint8_t *data, size_t *count, uint8_t_filter_func 
 }
 
 
-void dc_stream_for_each_uint8_t(const uint8_t *data, size_t count, size_t position, uint8_t_consumer_func apply, void *arg)
+void dc_stream_for_each_uint8_t(const struct dc_posix_env *env, const uint8_t *data, size_t count, size_t position, uint8_t_consumer_func apply, void *arg)
 {
+    DC_TRACE(env);
+
     if(apply)
     {
         for(size_t line_position = 0; line_position < count; line_position++)
         {
-            apply(data[line_position], line_position, count, position, arg);
+            apply(env, data[line_position], line_position, count, position, arg);
             position++;
         }
     }
@@ -70,6 +74,7 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env
     struct dc_stream_copy_info *info;
     int err;
 
+    DC_TRACE(env);
     info = dc_malloc(env, &err, sizeof(struct dc_stream_copy_info));
 
     if(info == NULL)
@@ -89,6 +94,7 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env
 
 void dc_stream_copy_info_destroy(const struct dc_posix_env *env, struct dc_stream_copy_info **info)
 {
+    DC_TRACE(env);
     dc_free(env, *info);
     *info = NULL;
 }
@@ -99,6 +105,7 @@ void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_
     ssize_t  len;
     int      err;
 
+    DC_TRACE(env);
     buffer = dc_malloc(env, &err, buffer_size);
 
     while((len = dc_read(env, &err, fd_in, buffer, buffer_size)) > 0)
@@ -108,10 +115,10 @@ void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_
         size_t len2;
 
         len2 = (size_t)len;
-        dc_stream_for_each_uint8_t(buffer, len2, info->in_position, info->in_consumer, info->in_data);
+        dc_stream_for_each_uint8_t(env, buffer, len2, info->in_position, info->in_consumer, info->in_data);
         info->in_position += (size_t)len;
-        dc_stream_filter_uint8_t(buffer, &len2, info->filter);
-        dc_stream_for_each_uint8_t(buffer, len2, info->out_position, info->out_consumer, info->out_data);
+        dc_stream_filter_uint8_t(env, buffer, &len2, info->filter);
+        dc_stream_for_each_uint8_t(env, buffer, len2, info->out_position, info->out_consumer, info->out_data);
         info->out_position += len2;
         write(fd_out, buffer, len2);
     }
