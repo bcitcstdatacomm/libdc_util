@@ -23,9 +23,14 @@ target_include_directories(dc_util PRIVATE ../include/dc_util)
 target_include_directories(dc_util PRIVATE /usr/local/include)
 target_link_directories(dc_util PRIVATE /usr/local/lib)
 
-set_target_properties(dc_util  PROPERTIES
+set_target_properties(dc_util PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR})
+
+find_library(LIBM m REQUIRED)
+if(LIBM)
+    target_link_libraries(dc_util ${LIBM})
+endif()
 
 find_library(LIBDC_POSIX dc_posix REQUIRED)
 if(LIBDC_POSIX)
