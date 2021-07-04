@@ -17,7 +17,10 @@
 
 #include "types.h"
 #include <dc_posix/inttypes.h>
+#include <dc_posix/string.h>
+#include <dc_posix/stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
 
 __attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env)
@@ -57,7 +60,31 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
     {
         if(value > UINT16_MAX)
         {
-            DC_REPORT_ERRNO(env, err, ERANGE);
+            // TODO: we should not assume 64 bits...
+            //                            19          + 6 + 5 + '\0'
+            static const char   *format = "%" PRIuMAX " is greater than %" PRIu16;
+            static const size_t  size   = (19 + 6 + 5 + 1) * sizeof(char);
+            struct dc_error      local_err;
+            char                *msg;
+
+            dc_error_init(&local_err);
+            msg = dc_malloc(env, &local_err, size);
+
+            if(DC_HAS_NO_ERROR(&local_err))
+            {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
+                sprintf(msg, format, value, UINT16_MAX);
+#pragma GCC diagnostic pop
+                DC_REPORT_SYSTEM(env, err, msg, ERANGE);
+                dc_free(env, msg, size);
+            }
+            else
+            {
+                // TODO: come up with a better message
+                DC_REPORT_SYSTEM(env, err, "XYZ", ERANGE);
+            }
+
             value = 0;
         }
     }
