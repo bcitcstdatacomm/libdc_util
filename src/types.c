@@ -17,9 +17,7 @@
 
 #include "types.h"
 #include <dc_posix/inttypes.h>
-#include <errno.h>
 #include <math.h>
-#include <stdio.h>
 
 
 __attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env)
@@ -35,6 +33,7 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *en
         uintmax_t   largest_unsignedA;
         uintmax_t   largest_unsignedB;
 
+        // TODO: check for errors
         bits              = sizeof(off_t) * 8;
         largest_signed    = powl(2, bits);
         largest_unsignedA = (uintmax_t)(largest_signed / 2);
@@ -46,7 +45,7 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *en
 }
 
 
-uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char *str, int base)
+uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err, const char *str, int base)
 {
     char      *endptr;
     uintmax_t  value;
@@ -54,14 +53,16 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char
     DC_TRACE(env);
     value = dc_strtoumax(env, err, str, &endptr, base);
 
-    if(*err != 0)
+    if(DC_HAS_NO_ERROR(err))
     {
-        value = 0;
+        if(value > UINT16_MAX)
+        {
+            DC_REPORT_ERRNO(env, err, ERANGE);
+            value = 0;
+        }
     }
-
-    if(value > UINT16_MAX)
+    else
     {
-        *err  = ERANGE;
         value = 0;
     }
 

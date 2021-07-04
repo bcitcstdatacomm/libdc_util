@@ -31,30 +31,36 @@
 struct dc_stream_copy_info;
 
 
-typedef bool (*uint8_t_filter_func)(const struct dc_posix_env *env, uint8_t data);
-typedef void (*uint8_t_consumer_func)(const struct dc_posix_env *env, uint8_t item, size_t line_position, size_t line_count, size_t file_position, void *data);
-
-
 /**
  *
  * @param env
+ * @param err
  * @param data
  * @param count
  * @param test
  */
-void dc_stream_filter_uint8_t(const struct dc_posix_env *env, uint8_t *data, size_t *count, uint8_t_filter_func test);
+void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
+                              struct dc_error *err,
+                              uint8_t *data, size_t *count,
+                              bool (*test)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data));
 
 
 /**
  *
  * @param env
+ * @param err
  * @param data
  * @param count
  * @param position
  * @param apply
  * @param arg
  */
-void dc_stream_for_each_uint8_t(const struct dc_posix_env *env, const uint8_t *data, size_t count, size_t position, uint8_t_consumer_func apply, void *arg);
+void dc_stream_for_each_uint8_t(const struct dc_posix_env *env,
+                                struct dc_error *err,
+                                const uint8_t *data, size_t count,
+                                size_t position,
+                                void (*apply)(const struct dc_posix_env *env, struct dc_error *err, uint8_t item, size_t line_position, size_t line_count, size_t file_position, void *data),
+                                void *arg);
 
 
 /**
@@ -65,7 +71,12 @@ void dc_stream_for_each_uint8_t(const struct dc_posix_env *env, const uint8_t *d
  * @param buffer_size
  * @param info
  */
-void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_t buffer_size, struct dc_stream_copy_info *info);
+bool dc_stream_copy(const struct dc_posix_env  *env,
+                    struct                      dc_error *err,
+                    int                         fd_in,
+                    int                         fd_out,
+                    size_t                      buffer_size,
+                    struct dc_stream_copy_info *info);
 
 
 /**
@@ -78,7 +89,13 @@ void dc_stream_copy(const struct dc_posix_env *env, int fd_in, int fd_out, size_
  * @param out_data
  * @return
  */
-struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env *env, uint8_t_filter_func filter, uint8_t_consumer_func in_consumer, void *in_data, uint8_t_consumer_func out_consumer, void *out_data);
+struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env *env,
+                                                       struct dc_error           *err,
+                                                       bool (*filter)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data),
+                                                       void (*in_consumer)(const struct dc_posix_env *env, struct dc_error *err, uint8_t item, size_t line_position, size_t line_count, size_t file_position, void *data),
+                                                       void *in_data,
+                                                       void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err, uint8_t item, size_t line_position, size_t line_count, size_t file_position, void *data),
+                                                       void *out_data);
 
 
 /**

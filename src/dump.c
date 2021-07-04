@@ -17,11 +17,11 @@
 
 #include "dump.h"
 #include "bits.h"
+#include <dc_posix/string.h>
+#include <dc_posix/unistd.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include <string.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <math.h>
 
 
@@ -36,6 +36,8 @@ struct dc_dump_info
     size_t max_position;
     size_t line_number;
     size_t line_position;
+    size_t line_format_size;
+    size_t line_buffer_size;
     char *line_format;
     char *line_buffer;
 };
@@ -43,52 +45,57 @@ struct dc_dump_info
 
 
 
-struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, int fd, off_t file_size)
+struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct dc_error *err, int fd, off_t file_size)
 {
     struct dc_dump_info *info;
-    size_t               format_size;
-    const char          *format;
-    int                  err;
 
     DC_TRACE(env);
-    info = dc_calloc(env, &err, 1, sizeof(struct dc_dump_info));
+    info = dc_calloc(env, err, 1, sizeof(struct dc_dump_info));
 
-    if(info == NULL)
+    if(DC_HAS_NO_ERROR(err))
     {
-    }
+        const char *format;
 
-    info->dump_fd       = fd;
-    info->line_number   = 1;
-    info->line_position = 1;
+        info->dump_fd       = fd;
+        info->line_number   = 1;
+        info->line_position = 1;
 
-    // TODO - breaks for 999999999999999997 - 999999999999999999
+        // TODO - breaks for 999999999999999997 - 999999999999999999
+        info->max_position = (size_t)(log10l(file_size) + 1.0l);
 
-    info->max_position = (size_t)(log10l(file_size) + 1.0l);
+        // NOTE: this should be controlled by a parameter in the future
+        // file pos line # line pos : binary : octal : decimal : hex : ascii or
+        // max_digits max_digits max_digits : 11111111 : 0377 : 255 : 0xFF : ????
+        format = "%*d %*d %*d : %08s : 0%03o : %03d : 0x%02X : %-4s";
+        info->line_format_size = dc_strlen(env, format) + 1;
+        info->line_format = dc_malloc(env, err, info->line_format_size);
 
-    // NOTE: this will be controlled by options in the future
-    // file pos line # line pos : binary : octal : decimal : hex : ascii or
-    // max_digits max_digits max_digits : 11111111 : 0377 : 255 : 0xFF : ????
-    format = "%*d %*d %*d : %08s : 0%03o : %03d : 0x%02X : %-4s";
-    info->line_format = dc_malloc(env, &err, strlen(format) + 1);
+        if(DC_HAS_ERROR(err))
+        {
+            dc_free(env, info, sizeof(struct dc_dump_info));
+            info = NULL;
+        }
+        else
+        {
+            dc_strcpy(env, info->line_format, format);
 
-    if(info->line_format == NULL)
-    {
-    }
+            // 3 * "%*d " where * is info->max_position
+            // ": 11111111 " for binary (11)
+            // ": 0### " for octal (7)
+            // ": ### " for decimal (6)
+            // ": 0x### " for hex (8)
+            // ": ????" for the ASCII value (6)
+            // '\0' + 1
+            info->line_buffer_size = (3 * (info->max_position + 1)) + 11 + 7 + 6 + 8 + 6 + 1;
+            info->line_buffer      = dc_malloc(env, err, info->line_buffer_size);
 
-    strcpy(info->line_format, format);
-
-    // 3 * "%*d " where * is info->max_position
-    // ": 11111111 " for binary (11)
-    // ": 0### " for octal (7)
-    // ": ### " for decimal (6)
-    // ": 0x### " for hex (8)
-    // ": ????" for the ASCII value (6)
-    // '\0' + 1
-    format_size       = (3 * (info->max_position + 1)) + 11 + 7 + 6 + 8 + 6 + 1;
-    info->line_buffer = dc_malloc(env, &err, format_size);
-
-    if(info->line_buffer == NULL)
-    {
+            if(DC_HAS_ERROR(err))
+            {
+                dc_free(env, info->line_format, info->line_format_size);
+                dc_free(env, info, sizeof(struct dc_dump_info));
+                info = NULL;
+            }
+        }
     }
 
     return info;
@@ -100,18 +107,23 @@ void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **
 
     DC_TRACE(env);
     info = *pinfo;
-    dc_free(env, info->line_format);
-    dc_free(env, info->line_buffer);
+    dc_free(env, info->line_format, info->line_format_size);
+    dc_free(env, info->line_buffer, info->line_buffer_size);
+    dc_free(env, info, sizeof(struct dc_dump_info));
 
     if(env->null_free)
     {
-        memset(*pinfo, 0, sizeof(struct dc_dump_info));
+        *pinfo = NULL;
     }
-
-    dc_free(env, info);
 }
 
-void dc_dump_dumper(const struct dc_posix_env *env, uint8_t item, __attribute__((unused)) size_t line_position, __attribute__((unused)) size_t count, size_t file_position, void *arg)
+void dc_dump_dumper(const struct dc_posix_env      *env,
+                    struct dc_error                *err,
+                    uint8_t                         item,
+                    __attribute__((unused)) size_t  line_position,
+                    __attribute__((unused)) size_t  count,
+                    size_t                          file_position,
+                    void                           *arg)
 {
     struct dc_dump_info *info;
     bool                 bits[8];
@@ -133,7 +145,7 @@ void dc_dump_dumper(const struct dc_posix_env *env, uint8_t item, __attribute__(
         const char *temp;
 
         temp = lookup_control(env, item);
-        strcpy(printable, temp);
+        dc_strcpy(env, printable, temp);
     }
     else
     {
@@ -148,17 +160,24 @@ void dc_dump_dumper(const struct dc_posix_env *env, uint8_t item, __attribute__(
             info->max_position, info->line_position,
             binary, item, item, item, printable);
 #pragma GCC diagnostic pop
-    write(info->dump_fd, info->line_buffer, strlen(info->line_buffer));
-    write(info->dump_fd, "\n", 1);
+    dc_write(env, err, info->dump_fd, info->line_buffer, dc_strlen(env, info->line_buffer));
 
-    if(item == '\n')
+    if(DC_HAS_NO_ERROR(err))
     {
-        info->line_number++;
-        info->line_position = 1;
-    }
-    else
-    {
-        info->line_position++;
+        dc_write(env, err, info->dump_fd, "\n", 1);
+
+        if(DC_HAS_NO_ERROR(err))
+        {
+            if(item == '\n')
+            {
+                info->line_number++;
+                info->line_position = 1;
+            }
+            else
+            {
+                info->line_position++;
+            }
+        }
     }
 }
 

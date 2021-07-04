@@ -16,34 +16,32 @@
 
 
 #include "path.h"
-#include <string.h>
-#include <stdio.h>
 #include <dc_posix/stdlib.h>
+#include <dc_posix/string.h>
 #include <dc_posix/wordexp.h>
 
 
-void expand_path(const struct dc_posix_env *env, char **expanded_path, const char *path)
+void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **expanded_path, const char *path)
 {
-    wordexp_t  expanded;
-    char      *root;
-    size_t     root_length;
-    int        err;
+    wordexp_t expanded;
 
     DC_TRACE(env);
-    dc_wordexp(env, &err, path, &expanded, 0);
+    dc_wordexp(env, err, path, &expanded, 0);
 
-    if(err != 0)
+    if(DC_HAS_NO_ERROR(err))
     {
+        char   *root;
+        size_t  root_length;
+
+        root           = *expanded.we_wordv;
+        root_length    = dc_strlen(env, root);
+        *expanded_path = dc_malloc(env, err, (root_length + 1) * sizeof(char));
+
+        if(DC_HAS_NO_ERROR(err))
+        {
+            dc_strcpy(env, *expanded_path, root);
+        }
     }
 
-    root           = *expanded.we_wordv;
-    root_length    = strlen(root);
-    *expanded_path = dc_malloc(env, &err, (root_length + 1) * sizeof(char));
-
-    if(*expanded_path == NULL)
-    {
-    }
-
-    sprintf(*expanded_path, "%s", root);
     wordfree(&expanded);
 }

@@ -16,9 +16,6 @@
 
 
 #include "bits.h"
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
 
 
 static void to_binary(const struct dc_posix_env *env, uint32_t val, bool *bits, const uint32_t *masks, size_t count);

@@ -39,7 +39,7 @@ off_t dc_max_off_t(const struct dc_posix_env *env);
  * @param base
  * @return
  */
-uint16_t dc_uint16_from_str(const struct dc_posix_env *env, int *err, const char *str, int base);
+uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err, const char *str, int base);
 
 
-#endif //LIBDC_UTIL_TYPES_H
+#endif // LIBDC_UTIL_TYPES_H
