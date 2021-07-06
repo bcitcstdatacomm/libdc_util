@@ -81,8 +81,7 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
             }
             else
             {
-                // TODO: come up with a better message
-                DC_REPORT_SYSTEM(env, err, "XYZ", ERANGE);
+                DC_REPORT_SYSTEM(env, err, "Out of memory", ENOMEM);
             }
 
             value = 0;

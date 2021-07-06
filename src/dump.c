@@ -119,63 +119,70 @@ void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **
 
 void dc_dump_dumper(const struct dc_posix_env      *env,
                     struct dc_error                *err,
-                    uint8_t                         item,
-                    __attribute__((unused)) size_t  line_position,
-                    __attribute__((unused)) size_t  count,
+                    const uint8_t                  *data,
+                    size_t                          count,
                     size_t                          file_position,
                     void                           *arg)
 {
     struct dc_dump_info *info;
-    bool                 bits[8];
-    char                 binary[9];
-    char                 printable[5];
 
     DC_TRACE(env);
-    dc_to_binary8(env, item, bits);
-    dc_to_printable_binary8(env, bits, binary);
     info = arg;
 
-    if(isprint(item))
+    for(size_t i = 0; i < count; i++)
     {
-        printable[0] = (char)item;
-        printable[1] = '\0';
-    }
-    else if(iscntrl(item))
-    {
-        const char *temp;
+        uint8_t item;
+        bool    bits[8];
+        char    binary[9];
+        char    printable[5];
 
-        temp = lookup_control(env, item);
-        dc_strcpy(env, printable, temp);
-    }
-    else
-    {
-        printable[0] = '\0';
-    }
+        item = data[i];
+        dc_to_binary8(env, item, bits);
+        dc_to_printable_binary8(env, bits, binary);
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-nonliteral"
-    sprintf(info->line_buffer, info->line_format,
-            info->max_position, file_position,
-            info->max_position, info->line_number,
-            info->max_position, info->line_position,
-            binary, item, item, item, printable);
-#pragma GCC diagnostic pop
-    dc_write(env, err, info->dump_fd, info->line_buffer, dc_strlen(env, info->line_buffer));
+        if(isprint(item))
+        {
+            printable[0] = (char)item;
+            printable[1] = '\0';
+        }
+        else if(iscntrl(item))
+        {
+            const char *temp;
 
-    if(DC_HAS_NO_ERROR(err))
-    {
-        dc_write(env, err, info->dump_fd, "\n", 1);
+            temp = lookup_control(env, item);
+            dc_strcpy(env, printable, temp);
+        }
+        else
+        {
+            printable[0] = '\0';
+        }
+
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wformat-nonliteral"
+        sprintf(info->line_buffer, info->line_format,
+                info->max_position, file_position,
+                info->max_position, info->line_number,
+                info->max_position, info->line_position,
+                binary, item, item, item, printable);
+    #pragma GCC diagnostic pop
+        dc_write(env, err, info->dump_fd, info->line_buffer, dc_strlen(env, info->line_buffer));
 
         if(DC_HAS_NO_ERROR(err))
         {
-            if(item == '\n')
+            file_position++;
+            dc_write(env, err, info->dump_fd, "\n", 1);
+
+            if(DC_HAS_NO_ERROR(err))
             {
-                info->line_number++;
-                info->line_position = 1;
-            }
-            else
-            {
-                info->line_position++;
+                if(item == '\n')
+                {
+                    info->line_number++;
+                    info->line_position = 1;
+                }
+                else
+                {
+                    info->line_position++;
+                }
             }
         }
     }
