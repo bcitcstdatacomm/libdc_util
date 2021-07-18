@@ -21,6 +21,18 @@
 #include <dc_posix/unistd.h>
 
 
+struct dc_stream_copy_info
+{
+    size_t in_position;
+    size_t out_position;
+    bool (*filter)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data);
+    void (*in_consumer)(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t line_count, size_t file_position, void *arg);
+    void *in_data;
+    void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t line_count, size_t file_position, void *arg);
+    void *out_data;
+} __attribute__((aligned(64)));
+
+
 void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
                               struct dc_error *err,
                               uint8_t *data,
@@ -86,18 +98,6 @@ void dc_stream_for_each_uint8_t(const struct dc_posix_env *env,
         }
     }
 }
-
-struct dc_stream_copy_info
-{
-    size_t in_position;
-    size_t out_position;
-    bool (*filter)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data);
-    void (*in_consumer)(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t line_count, size_t file_position, void *arg);
-    void *in_data;
-    void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t line_count, size_t file_position, void *arg);
-    void *out_data;
-};
-
 
 struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env *env,
                                                        struct dc_error           *err,

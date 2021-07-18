@@ -17,12 +17,12 @@
 
 #include "dump.h"
 #include "bits.h"
+#include <ctype.h>
 #include <dc_posix/string.h>
 #include <dc_posix/unistd.h>
-#include <stdbool.h>
-#include <ctype.h>
-#include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 
 static const char *lookup_control(const struct dc_posix_env *env, uint8_t c);
@@ -30,6 +30,7 @@ static const char *lookup_control(const struct dc_posix_env *env, uint8_t c);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpadded"
+
 struct dc_dump_info
 {
     int dump_fd;
@@ -40,9 +41,8 @@ struct dc_dump_info
     size_t line_buffer_size;
     char *line_format;
     char *line_buffer;
-};
+} __attribute__((aligned(64)));
 #pragma GCC diagnostic pop
-
 
 
 struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct dc_error *err, int fd, off_t file_size)
@@ -61,7 +61,7 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
         info->line_position = 1;
 
         // TODO - breaks for 999999999999999997 - 999999999999999999
-        info->max_position = (size_t)(log10l(file_size) + 1.0l);
+        info->max_position = (size_t)(log10l(file_size) + 1.0L);
 
         // NOTE: this should be controlled by a parameter in the future
         // file pos line # line pos : binary : octal : decimal : hex : ascii or
@@ -117,12 +117,12 @@ void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **
     }
 }
 
-void dc_dump_dumper(const struct dc_posix_env      *env,
-                    struct dc_error                *err,
-                    const uint8_t                  *data,
-                    size_t                          count,
-                    size_t                          file_position,
-                    void                           *arg)
+void dc_dump_dumper(const struct dc_posix_env *env,
+                    struct dc_error           *err,
+                    const uint8_t             *data,
+                    size_t                     count,
+                    size_t                     file_position,
+                    void                      *arg)
 {
     struct dc_dump_info *info;
 

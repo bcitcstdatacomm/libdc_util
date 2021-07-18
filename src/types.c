@@ -17,8 +17,8 @@
 
 #include "types.h"
 #include <dc_posix/inttypes.h>
-#include <dc_posix/string.h>
 #include <dc_posix/stdlib.h>
+#include <dc_posix/string.h>
 #include <math.h>
 #include <stdio.h>
 

@@ -47,13 +47,17 @@ void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **
 /**
  *
  * @param env
- * @param item
- * @param line_position
+ * @param err
+ * @param data
  * @param count
  * @param file_position
  * @param arg
  */
-void dc_dump_dumper(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *item, size_t count, size_t file_position, void *arg);
-
+void dc_dump_dumper(const struct dc_posix_env *env,
+                    struct dc_error           *err,
+                    const uint8_t             *data,
+                    size_t                     count,
+                    size_t                     file_position,
+                    void                      *arg);
 
 #endif // LIBDC_UTIL_DUMP_H
