@@ -402,12 +402,12 @@ static void set_bit(const struct dc_posix_env *env, size_t position, char const 
 
 void dc_from_binary8(const struct dc_posix_env *env, bool const bits[static 8], uint8_t *val)
 {
-    uint8_t value;
+    uint32_t value;
 
     DC_TRACE(env);
     value = 0;
 
-    for(size_t i = 0; i < 8; i++)
+    for(uint32_t i = 0; i < 8; i++)
     {
         if(bits[i])
         {
@@ -416,17 +416,17 @@ void dc_from_binary8(const struct dc_posix_env *env, bool const bits[static 8], 
         }
     }
 
-    *val = value;
+    *val = (uint8_t)value;
 }
 
 void dc_from_binary16(const struct dc_posix_env *env, bool const bits[static 16], uint16_t *val)
 {
-    uint8_t value;
+    uint32_t value;
 
     DC_TRACE(env);
     value = 0;
 
-    for(size_t i = 0; i < 16; i++)
+    for(uint32_t i = 0; i < 16; i++)
     {
         if(bits[i])
         {
@@ -435,7 +435,7 @@ void dc_from_binary16(const struct dc_posix_env *env, bool const bits[static 16]
         }
     }
 
-    *val = value;
+    *val = (uint16_t)value;
 }
 
 
@@ -446,7 +446,7 @@ void dc_from_binary32(const struct dc_posix_env *env, bool const bits[static 32]
     DC_TRACE(env);
     value = 0;
 
-    for(size_t i = 0; i < 32; i++)
+    for(uint32_t i = 0; i < 32; i++)
     {
         if(bits[i])
         {
@@ -461,18 +461,16 @@ void dc_from_binary32(const struct dc_posix_env *env, bool const bits[static 32]
 void dc_from_binary64(const struct dc_posix_env *env, bool const bits[static 64], uint64_t *val)
 {
     uint64_t value;
-    static uint64_t one = UINT64_C(1);
-    static uint64_t sixty_three = UINT64_C(63);
 
     DC_TRACE(env);
     value = 0;
 
-    for(size_t i = 0; i < 64; i++)
+    for(uint64_t i = 0; i < 64; i++)
     {
         if(bits[i])
         {
             // https://stackoverflow.com/questions/47981/how-do-you-set-clear-and-toggle-a-single-bit
-            value |= one << (sixty_three - i);
+            value |= UINT64_C(1) << (UINT64_C(63) - i);
         }
     }
 
