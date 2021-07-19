@@ -18,8 +18,8 @@
 #include "dump.h"
 #include "bits.h"
 #include <ctype.h>
-#include <dc_posix/string.h>
-#include <dc_posix/unistd.h>
+#include <dc_posix/dc_string.h>
+#include <dc_posix/dc_unistd.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -30,7 +30,6 @@ static const char *lookup_control(const struct dc_posix_env *env, uint8_t c);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpadded"
-
 struct dc_dump_info
 {
     int dump_fd;
@@ -52,7 +51,7 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
     DC_TRACE(env);
     info = dc_calloc(env, err, 1, sizeof(struct dc_dump_info));
 
-    if(DC_HAS_NO_ERROR(err))
+    if(dc_error_has_no_error(err))
     {
         const char *format;
 
@@ -70,7 +69,7 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
         info->line_format_size = dc_strlen(env, format) + 1;
         info->line_format = dc_malloc(env, err, info->line_format_size);
 
-        if(DC_HAS_ERROR(err))
+        if(dc_error_has_error(err))
         {
             dc_free(env, info, sizeof(struct dc_dump_info));
             info = NULL;
@@ -89,7 +88,7 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
             info->line_buffer_size = (3 * (info->max_position + 1)) + 11 + 7 + 6 + 8 + 6 + 1;
             info->line_buffer      = dc_malloc(env, err, info->line_buffer_size);
 
-            if(DC_HAS_ERROR(err))
+            if(dc_error_has_error(err))
             {
                 dc_free(env, info->line_format, info->line_format_size);
                 dc_free(env, info, sizeof(struct dc_dump_info));
@@ -167,12 +166,12 @@ void dc_dump_dumper(const struct dc_posix_env *env,
     #pragma GCC diagnostic pop
         dc_write(env, err, info->dump_fd, info->line_buffer, dc_strlen(env, info->line_buffer));
 
-        if(DC_HAS_NO_ERROR(err))
+        if(dc_error_has_no_error(err))
         {
             file_position++;
             dc_write(env, err, info->dump_fd, "\n", 1);
 
-            if(DC_HAS_NO_ERROR(err))
+            if(dc_error_has_no_error(err))
             {
                 if(item == '\n')
                 {

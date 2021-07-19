@@ -19,7 +19,7 @@
  */
 
 
-#include <dc_posix/posix_env.h>
+#include <dc_posix/dc_posix_env.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -38,7 +38,7 @@ void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte, bool bits[stati
  * @param byte
  * @param bits
  */
-void dc_to_binary16(const struct dc_posix_env *env, uint16_t byte, bool bits[static 16]);
+void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes, bool bits[static 16]);
 
 /**
  *
@@ -46,7 +46,7 @@ void dc_to_binary16(const struct dc_posix_env *env, uint16_t byte, bool bits[sta
  * @param byte
  * @param bits
  */
-void dc_to_binary32(const struct dc_posix_env *env, uint32_t byte, bool bits[static 32]);
+void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes, bool bits[static 32]);
 
 /**
  *
@@ -54,7 +54,7 @@ void dc_to_binary32(const struct dc_posix_env *env, uint32_t byte, bool bits[sta
  * @param byte
  * @param bits
  */
-void dc_to_binary64(const struct dc_posix_env *env, uint64_t byte, bool bits[static 64]);
+void dc_to_binary64(const struct dc_posix_env *env, uint64_t bytes, bool bits[static 64]);
 
 /**
  *

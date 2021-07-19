@@ -2,7 +2,7 @@
 #define LIBDC_UTIL_STREAMS_H
 
 
-#include <dc_posix/posix_env.h>
+#include <dc_posix/dc_posix_env.h>
 
 
 /*
@@ -22,7 +22,7 @@
  */
 
 
-#include <dc_posix/posix_env.h>
+#include <dc_posix/dc_posix_env.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>

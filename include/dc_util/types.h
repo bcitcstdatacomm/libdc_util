@@ -19,7 +19,7 @@
  */
 
 
-#include <dc_posix/posix_env.h>
+#include <dc_posix/dc_posix_env.h>
 #include <sys/types.h>
 #include <stdint.h>
 

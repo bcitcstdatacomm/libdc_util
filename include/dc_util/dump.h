@@ -19,7 +19,7 @@
  */
 
 
-#include <dc_posix/stdlib.h>
+#include <dc_posix/dc_stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <sys/types.h>

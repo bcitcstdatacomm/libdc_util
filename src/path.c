@@ -16,9 +16,9 @@
 
 
 #include "path.h"
-#include <dc_posix/stdlib.h>
-#include <dc_posix/string.h>
-#include <dc_posix/wordexp.h>
+#include <dc_posix/dc_stdlib.h>
+#include <dc_posix/dc_string.h>
+#include <dc_posix/dc_wordexp.h>
 
 
 void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **expanded_path, const char *path)
@@ -28,7 +28,7 @@ void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **ex
     DC_TRACE(env);
     dc_wordexp(env, err, path, &expanded, 0);
 
-    if(DC_HAS_NO_ERROR(err))
+    if(dc_error_has_no_error(err))
     {
         char   *root;
         size_t  root_length;
@@ -37,7 +37,7 @@ void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **ex
         root_length    = dc_strlen(env, root);
         *expanded_path = dc_malloc(env, err, (root_length + 1) * sizeof(char));
 
-        if(DC_HAS_NO_ERROR(err))
+        if(dc_error_has_no_error(err))
         {
             dc_strcpy(env, *expanded_path, root);
         }

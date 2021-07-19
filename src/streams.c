@@ -16,11 +16,13 @@
 
 
 #include "streams.h"
-#include <dc_posix/stdlib.h>
-#include <dc_posix/string.h>
-#include <dc_posix/unistd.h>
+#include <dc_posix/dc_stdlib.h>
+#include <dc_posix/dc_string.h>
+#include <dc_posix/dc_unistd.h>
 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
 struct dc_stream_copy_info
 {
     size_t in_position;
@@ -31,6 +33,7 @@ struct dc_stream_copy_info
     void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data, size_t line_count, size_t file_position, void *arg);
     void *out_data;
 } __attribute__((aligned(64)));
+#pragma GCC diagnostic pop
 
 
 void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
@@ -112,7 +115,7 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(const struct dc_posix_env
     DC_TRACE(env);
     info = dc_malloc(env, err, sizeof(struct dc_stream_copy_info));
 
-    if(DC_HAS_NO_ERROR(err))
+    if(dc_error_has_no_error(err))
     {
         info->in_position  = 0;
         info->out_position = 0;
@@ -146,7 +149,7 @@ bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err, int fd
     DC_TRACE(env);
     buffer = dc_malloc(env, err, buffer_size);
 
-    if(DC_HAS_NO_ERROR(err))
+    if(dc_error_has_no_error(err))
     {
         ssize_t read_len;
 
@@ -171,7 +174,7 @@ bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err, int fd
             // write to the destination
             dc_write(env, err, fd_out, buffer, len);
 
-            if(DC_HAS_ERROR(err))
+            if(dc_error_has_error(err))
             {
                 break;
             }
@@ -180,7 +183,7 @@ bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err, int fd
         dc_free(env, buffer, buffer_size);
     }
 
-    ret_val = DC_HAS_NO_ERROR(err);
+    ret_val = dc_error_has_no_error(err);
 
     return ret_val;
 }
