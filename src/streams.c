@@ -19,8 +19,6 @@
 #include <dc_posix/dc_string.h>
 #include <dc_posix/dc_unistd.h>
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
 struct dc_stream_copy_info
 {
     size_t in_position;
@@ -40,10 +38,9 @@ struct dc_stream_copy_info
                          size_t                     file_position,
                          void *                     arg);
     void *out_data;
-} __attribute__((aligned(64)));
-#pragma GCC diagnostic pop
+};
 
-void                   dc_stream_filter_uint8_t(const struct dc_posix_env *env,
+void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
                                                 struct dc_error *          err,
                                                 uint8_t *                  data,
                                                 size_t *                   count,

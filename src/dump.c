@@ -25,8 +25,6 @@
 
 static const char *    lookup_control(const struct dc_posix_env *env, uint8_t c);
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
 struct dc_dump_info
 {
     int    dump_fd;
@@ -37,8 +35,7 @@ struct dc_dump_info
     size_t line_buffer_size;
     char * line_format;
     char * line_buffer;
-} __attribute__((aligned(64)));
-#pragma GCC diagnostic pop
+};
 
 struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct dc_error *err, int fd, off_t file_size)
 {
