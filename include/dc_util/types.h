@@ -1,7 +1,6 @@
 #ifndef LIBDC_UTIL_TYPES_H
 #define LIBDC_UTIL_TYPES_H
 
-
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -18,11 +17,9 @@
  * limitations under the License.
  */
 
-
 #include <dc_posix/dc_posix_env.h>
-#include <sys/types.h>
 #include <stdint.h>
-
+#include <sys/types.h>
 
 /**
  *
@@ -39,7 +36,7 @@ off_t dc_max_off_t(const struct dc_posix_env *env);
  * @param base
  * @return
  */
-uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err, const char *str, int base);
-
+uint16_t dc_uint16_from_str(const struct dc_posix_env *env,
+                            struct dc_error *err, const char *str, int base);
 
 #endif // LIBDC_UTIL_TYPES_H

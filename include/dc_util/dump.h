@@ -1,7 +1,6 @@
 #ifndef LIBDC_UTIL_DUMP_H
 #define LIBDC_UTIL_DUMP_H
 
-
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -18,15 +17,12 @@
  * limitations under the License.
  */
 
-
 #include <dc_posix/dc_stdlib.h>
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <sys/types.h>
 
-
 struct dc_dump_info;
-
 
 /**
  *
@@ -35,14 +31,17 @@ struct dc_dump_info;
  * @param file_size
  * @return
  */
-struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct dc_error *err, int fd, off_t file_size);
+struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env,
+                                         struct dc_error *err, int fd,
+                                         off_t file_size);
 
 /**
  *
  * @param env
  * @param pinfo
  */
-void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **pinfo);
+void dc_dump_info_destroy(const struct dc_posix_env *env,
+                          struct dc_dump_info **pinfo);
 
 /**
  *
@@ -53,11 +52,8 @@ void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **
  * @param file_position
  * @param arg
  */
-void dc_dump_dumper(const struct dc_posix_env *env,
-                    struct dc_error           *err,
-                    const uint8_t             *data,
-                    size_t                     count,
-                    size_t                     file_position,
-                    void                      *arg);
+void dc_dump_dumper(const struct dc_posix_env *env, struct dc_error *err,
+                    const uint8_t *data, size_t count, size_t file_position,
+                    void *arg);
 
 #endif // LIBDC_UTIL_DUMP_H

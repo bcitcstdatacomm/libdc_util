@@ -9,6 +9,23 @@ project(libdc_util
         DESCRIPTION ""
         LANGUAGES C)
 
+set(HEADER_LIST
+        "${libdc_util_SOURCE_DIR}/include/dc_util/bits.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/dump.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/path.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/streams.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/types.h"
+        )
+
+set(SOURCE_LIST
+        "${libdc_util_SOURCE_DIR}/src/bits.c"
+        "${libdc_util_SOURCE_DIR}/src/dump.c"
+        "${libdc_util_SOURCE_DIR}/src/path.c"
+        "${libdc_util_SOURCE_DIR}/src/streams.c"
+        "${libdc_util_SOURCE_DIR}/src/types.c"
+        )
+
+
 ### Require out-of-source builds
 # this still creates a CMakeFiles directory and CMakeCache.txt- can we delete them?
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)

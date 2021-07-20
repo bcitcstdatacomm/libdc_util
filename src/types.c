@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 #include "types.h"
 #include <dc_posix/dc_inttypes.h>
 #include <dc_posix/dc_stdlib.h>
@@ -23,8 +22,7 @@
 #include <math.h>
 #include <stdio.h>
 
-
-__attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env)
+__attribute__((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env)
 {
     static off_t max = 0;
 
@@ -48,11 +46,10 @@ __attribute__ ((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *en
     return max;
 }
 
-
 uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err, const char *str, int base)
 {
-    char      *endptr;
-    uintmax_t  value;
+    char *    endptr;
+    uintmax_t value;
 
     DC_TRACE(env);
     value = dc_strtoumax(env, err, str, &endptr, base);
@@ -63,10 +60,10 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
         {
             // TODO: we should not assume 64 bits...
             //                            19          + 6 + 5 + '\0'
-            static const char   *format = "%" PRIuMAX " is greater than %" PRIu16;
-            static const size_t  size   = (19 + 6 + 5 + 1) * sizeof(char);
-            struct dc_error      local_err;
-            char                *msg;
+            static const char * format = "%" PRIuMAX " is greater than %" PRIu16;
+            static const size_t size   = (19 + 6 + 5 + 1) * sizeof(char);
+            struct dc_error     local_err;
+            char *              msg;
 
             dc_error_init(&local_err);
             msg = dc_malloc(env, &local_err, size);

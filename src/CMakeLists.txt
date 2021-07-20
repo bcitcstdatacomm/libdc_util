@@ -1,22 +1,6 @@
 # Note that headers are optional, and do not affect add_library, but they will not
 # show up in IDEs unless they are listed in add_library.
 
-set(HEADER_LIST
-        "${libdc_util_SOURCE_DIR}/include/dc_util/bits.h"
-        "${libdc_util_SOURCE_DIR}/include/dc_util/dump.h"
-        "${libdc_util_SOURCE_DIR}/include/dc_util/path.h"
-        "${libdc_util_SOURCE_DIR}/include/dc_util/streams.h"
-        "${libdc_util_SOURCE_DIR}/include/dc_util/types.h"
-        )
-
-set(SOURCE_LIST
-        "bits.c"
-        "dump.c"
-        "path.c"
-        "streams.c"
-        "types.c"
-        )
-
 add_definitions( -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 )
 
 if(APPLE)
@@ -61,4 +45,12 @@ source_group(
         TREE "${PROJECT_SOURCE_DIR}/include"
         PREFIX "Header Files"
         FILES ${HEADER_LIST}
+)
+
+add_custom_target(
+        format
+        COMMAND clang-format
+        -i
+        ${HEADER_LIST}
+        ${SOURCE_LIST}
 )

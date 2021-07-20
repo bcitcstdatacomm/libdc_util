@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-
 #include "path.h"
 #include <dc_posix/dc_stdlib.h>
 #include <dc_posix/dc_string.h>
 #include <dc_posix/dc_wordexp.h>
-
 
 void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **expanded_path, const char *path)
 {
@@ -30,8 +28,8 @@ void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **ex
 
     if(dc_error_has_no_error(err))
     {
-        char   *root;
-        size_t  root_length;
+        char * root;
+        size_t root_length;
 
         root           = *expanded.we_wordv;
         root_length    = dc_strlen(env, root);

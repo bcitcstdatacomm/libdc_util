@@ -1,7 +1,6 @@
 #ifndef LIBDC_UTIL_BITS_H
 #define LIBDC_UTIL_BITS_H
 
-
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -18,19 +17,9 @@
  * limitations under the License.
  */
 
-
 #include <dc_posix/dc_posix_env.h>
-#include <stdint.h>
 #include <stdbool.h>
-
-
-/**
- *
- * @param env
- * @param byte
- * @param bits
- */
-void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte, bool bits[static 8]);
+#include <stdint.h>
 
 /**
  *
@@ -38,7 +27,8 @@ void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte, bool bits[stati
  * @param byte
  * @param bits
  */
-void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes, bool bits[static 16]);
+void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte,
+                   bool bits[static 8]);
 
 /**
  *
@@ -46,7 +36,8 @@ void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes, bool bits[st
  * @param byte
  * @param bits
  */
-void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes, bool bits[static 32]);
+void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes,
+                    bool bits[static 16]);
 
 /**
  *
@@ -54,7 +45,17 @@ void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes, bool bits[st
  * @param byte
  * @param bits
  */
-void dc_to_binary64(const struct dc_posix_env *env, uint64_t bytes, bool bits[static 64]);
+void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes,
+                    bool bits[static 32]);
+
+/**
+ *
+ * @param env
+ * @param byte
+ * @param bits
+ */
+void dc_to_binary64(const struct dc_posix_env *env, uint64_t bytes,
+                    bool bits[static 64]);
 
 /**
  *
@@ -62,7 +63,8 @@ void dc_to_binary64(const struct dc_posix_env *env, uint64_t bytes, bool bits[st
  * @param bits
  * @param val
  */
-void dc_from_binary8(const struct dc_posix_env *env, const bool bits[static 8], uint8_t *val);
+void dc_from_binary8(const struct dc_posix_env *env, const bool bits[static 8],
+                     uint8_t *val);
 
 /**
  *
@@ -70,7 +72,8 @@ void dc_from_binary8(const struct dc_posix_env *env, const bool bits[static 8], 
  * @param bits
  * @param val
  */
-void dc_from_binary16(const struct dc_posix_env *env, const bool bits[static 16], uint16_t *val);
+void dc_from_binary16(const struct dc_posix_env *env,
+                      const bool bits[static 16], uint16_t *val);
 
 /**
  *
@@ -78,7 +81,8 @@ void dc_from_binary16(const struct dc_posix_env *env, const bool bits[static 16]
  * @param bits
  * @param val
  */
-void dc_from_binary32(const struct dc_posix_env *env, const bool bits[static 32], uint32_t *val);
+void dc_from_binary32(const struct dc_posix_env *env,
+                      const bool bits[static 32], uint32_t *val);
 
 /**
  *
@@ -86,7 +90,8 @@ void dc_from_binary32(const struct dc_posix_env *env, const bool bits[static 32]
  * @param bits
  * @param val
  */
-void dc_from_binary64(const struct dc_posix_env *env, const bool bits[static 64], uint64_t *val);
+void dc_from_binary64(const struct dc_posix_env *env,
+                      const bool bits[static 64], uint64_t *val);
 
 /**
  *
@@ -94,7 +99,9 @@ void dc_from_binary64(const struct dc_posix_env *env, const bool bits[static 64]
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary8(const struct dc_posix_env *env, const bool bits[static 8], char printable[static 9]);
+void dc_to_printable_binary8(const struct dc_posix_env *env,
+                             const bool bits[static 8],
+                             char printable[static 9]);
 
 /**
  *
@@ -102,7 +109,9 @@ void dc_to_printable_binary8(const struct dc_posix_env *env, const bool bits[sta
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary16(const struct dc_posix_env *env, const bool bits[static 16], char printable[static 17]);
+void dc_to_printable_binary16(const struct dc_posix_env *env,
+                              const bool bits[static 16],
+                              char printable[static 17]);
 
 /**
  *
@@ -110,7 +119,9 @@ void dc_to_printable_binary16(const struct dc_posix_env *env, const bool bits[st
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary32(const struct dc_posix_env *env, const bool bits[static 32], char printable[static 33]);
+void dc_to_printable_binary32(const struct dc_posix_env *env,
+                              const bool bits[static 32],
+                              char printable[static 33]);
 
 /**
  *
@@ -118,7 +129,9 @@ void dc_to_printable_binary32(const struct dc_posix_env *env, const bool bits[st
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary64(const struct dc_posix_env *env, const bool bits[static 64], char printable[static 65]);
+void dc_to_printable_binary64(const struct dc_posix_env *env,
+                              const bool bits[static 64],
+                              char printable[static 65]);
 
 /**
  *
@@ -126,7 +139,9 @@ void dc_to_printable_binary64(const struct dc_posix_env *env, const bool bits[st
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary8(const struct dc_posix_env *env, const char printable[static 9], bool bits[static 8]);
+void dc_from_printable_binary8(const struct dc_posix_env *env,
+                               const char printable[static 9],
+                               bool bits[static 8]);
 
 /**
  *
@@ -134,7 +149,9 @@ void dc_from_printable_binary8(const struct dc_posix_env *env, const char printa
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary16(const struct dc_posix_env *env, const char printable[static 17], bool bits[static 16]);
+void dc_from_printable_binary16(const struct dc_posix_env *env,
+                                const char printable[static 17],
+                                bool bits[static 16]);
 
 /**
  *
@@ -142,7 +159,9 @@ void dc_from_printable_binary16(const struct dc_posix_env *env, const char print
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary32(const struct dc_posix_env *env, const char printable[static 33], bool bits[static 32]);
+void dc_from_printable_binary32(const struct dc_posix_env *env,
+                                const char printable[static 33],
+                                bool bits[static 32]);
 
 /**
  *
@@ -150,7 +169,8 @@ void dc_from_printable_binary32(const struct dc_posix_env *env, const char print
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary64(const struct dc_posix_env *env, const char printable[static 65], bool bits[static 64]);
-
+void dc_from_printable_binary64(const struct dc_posix_env *env,
+                                const char printable[static 65],
+                                bool bits[static 64]);
 
 #endif // LIBDC_UTIL_BITS_H
