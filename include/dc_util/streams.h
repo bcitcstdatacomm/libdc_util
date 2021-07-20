@@ -69,12 +69,12 @@ void dc_stream_uint8_t(const struct dc_posix_env *env, struct dc_error *err,
  * @param arg
  */
 void dc_stream_for_each_uint8_t(
-    const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data,
-    size_t count, size_t position,
-    void (*apply)(const struct dc_posix_env *env, struct dc_error *err,
-                  uint8_t item, size_t line_position, size_t line_count,
-                  size_t file_position, void *data),
-    void *arg);
+        const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data,
+        size_t count, size_t position,
+        void (*apply)(const struct dc_posix_env *env, struct dc_error *err,
+                      uint8_t item, size_t line_position, size_t line_count,
+                      size_t file_position, void *data),
+        void *arg);
 
 /**
  *
@@ -99,17 +99,17 @@ bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err,
  * @return
  */
 struct dc_stream_copy_info *dc_stream_copy_info_create(
-    const struct dc_posix_env *env, struct dc_error *err,
-    bool (*filter)(const struct dc_posix_env *env, struct dc_error *err,
-                   uint8_t data),
-    void (*in_consumer)(const struct dc_posix_env *env, struct dc_error *err,
-                        const uint8_t *data, size_t line_count,
-                        size_t file_position, void *arg),
-    void *in_data,
-    void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err,
-                         const uint8_t *data, size_t line_count,
-                         size_t file_position, void *arg),
-    void *out_data);
+        const struct dc_posix_env *env, struct dc_error *err,
+        bool (*filter)(const struct dc_posix_env *env, struct dc_error *err,
+                       uint8_t data),
+        void (*in_consumer)(const struct dc_posix_env *env, struct dc_error *err,
+                            const uint8_t *data, size_t line_count,
+                            size_t file_position, void *arg),
+        void *in_data,
+        void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err,
+                             const uint8_t *data, size_t line_count,
+                             size_t file_position, void *arg),
+        void *out_data);
 
 /**
  *
