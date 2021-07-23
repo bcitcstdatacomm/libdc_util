@@ -24,14 +24,11 @@ set_target_properties(dc_util PROPERTIES
         SOVERSION ${PROJECT_VERSION_MAJOR})
 
 find_library(LIBM m REQUIRED)
-if (LIBM)
-    target_link_libraries(dc_util ${LIBM})
-endif ()
-
+find_library(LIBDC_ERROR dc_error REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
-if (LIBDC_POSIX)
-    target_link_libraries(dc_util ${LIBDC_POSIX})
-endif ()
+target_link_libraries(dc_util PRIVATE ${LIBM})
+target_link_libraries(dc_util PRIVATE ${LIBDC_ERROR})
+target_link_libraries(dc_util PRIVATE ${LIBDC_POSIX})
 
 # All users of this library will need at least C11
 target_compile_features(dc_util PUBLIC c_std_11)

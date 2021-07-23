@@ -25,7 +25,6 @@ set(SOURCE_LIST
         "${libdc_util_SOURCE_DIR}/src/types.c"
         )
 
-
 ### Require out-of-source builds
 # this still creates a CMakeFiles directory and CMakeCache.txt- can we delete them?
 file(TO_CMAKE_PATH "${PROJECT_BINARY_DIR}/CMakeLists.txt" LOC_PATH)
@@ -65,5 +64,5 @@ add_subdirectory(src)
 
 # Testing only available if this is the main app
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTING)
-    #    add_subdirectory(tests)
+    add_subdirectory(tests)
 endif ()
