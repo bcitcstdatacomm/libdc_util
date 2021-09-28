@@ -65,7 +65,7 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
             struct dc_error local_err;
             char *msg;
 
-            dc_error_init(&local_err);
+            dc_error_init(&local_err, err->reporter);
             msg = dc_malloc(env, &local_err, size);
 
             if(dc_error_has_no_error(&local_err))
