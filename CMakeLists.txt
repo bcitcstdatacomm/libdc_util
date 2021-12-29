@@ -14,6 +14,7 @@ set(HEADER_LIST
         "${libdc_util_SOURCE_DIR}/include/dc_util/dump.h"
         "${libdc_util_SOURCE_DIR}/include/dc_util/path.h"
         "${libdc_util_SOURCE_DIR}/include/dc_util/streams.h"
+        "${libdc_util_SOURCE_DIR}/include/dc_util/strings.h"
         "${libdc_util_SOURCE_DIR}/include/dc_util/types.h"
         )
 
@@ -22,6 +23,7 @@ set(SOURCE_LIST
         "${libdc_util_SOURCE_DIR}/src/dump.c"
         "${libdc_util_SOURCE_DIR}/src/path.c"
         "${libdc_util_SOURCE_DIR}/src/streams.c"
+        "${libdc_util_SOURCE_DIR}/src/strings.c"
         "${libdc_util_SOURCE_DIR}/src/types.c"
         )
 
