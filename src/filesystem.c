@@ -16,12 +16,13 @@
  * limitations under the License.
  */
 
+#include "filesystem.h"
 #include <dc_posix/dc_posix_env.h>
 #include <dc_posix/dc_stdlib.h>
 #include <dc_posix/dc_unistd.h>
 #include <sys/unistd.h>
 
-const char *get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
+char *get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
 {
     long path_max;
     size_t size;
