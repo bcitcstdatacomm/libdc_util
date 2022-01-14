@@ -19,7 +19,7 @@
 #include <dc_posix/dc_string.h>
 #include <dc_posix/dc_wordexp.h>
 
-void expand_path(const struct dc_posix_env *env, struct dc_error *err, char **expanded_path, const char *path)
+void dc_expand_path(const struct dc_posix_env *env, struct dc_error *err, char **expanded_path, const char *path)
 {
     wordexp_t expanded;
 

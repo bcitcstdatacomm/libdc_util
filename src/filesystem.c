@@ -22,7 +22,7 @@
 #include <dc_posix/dc_unistd.h>
 #include <sys/unistd.h>
 
-char *get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
+char *dc_get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
 {
     long path_max;
     size_t size;
@@ -44,14 +44,23 @@ char *get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
 
     for(buf = ptr = NULL; ptr == NULL; size *= 2)
     {
-        if((buf = dc_realloc(env, err, buf, size)) == NULL)
-        {
-        }
+        buf = dc_realloc(env, err, buf, size);
 
-        ptr = dc_getcwd(env, err, buf, size);
-
-        if(ptr == NULL && errno != ERANGE)
+        if(dc_error_has_no_error(err))
         {
+            ptr = dc_getcwd(env, err, buf, size);
+
+            if(dc_error_has_error(err))
+            {
+                if(err->errno_code == ERANGE)
+                {
+                    dc_error_reset(err);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
     }
 

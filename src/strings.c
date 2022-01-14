@@ -18,7 +18,7 @@
 #include <ctype.h>
 #include <dc_posix/dc_string.h>
 
-char *trim(const struct dc_posix_env *env, char *str)
+char *dc_str_trim(const struct dc_posix_env *env, char *str)
 {
     DC_TRACE(env);
 
@@ -69,7 +69,7 @@ char *trim(const struct dc_posix_env *env, char *str)
     return str;
 }
 
-ssize_t find_last(const struct dc_posix_env *env, const char *str, int c)
+ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
 {
     size_t index;
 
