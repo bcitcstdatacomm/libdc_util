@@ -17,52 +17,70 @@
 #include "strings.h"
 #include <ctype.h>
 #include <dc_posix/dc_string.h>
+#include <stdarg.h>
+#include <dc_posix/dc_stdlib.h>
 
-char *dc_str_trim(const struct dc_posix_env *env, char *str)
+char *dc_str_left_trim(const struct dc_posix_env *env, char *str)
 {
     DC_TRACE(env);
 
     if(str != NULL)
     {
-        char *temp;
-        size_t first;
+        size_t i;
 
-        temp = str;
-        first = 0;
+        i = 0;
 
-        while(isspace(*temp))
+        while(isspace(str[i]))
         {
-            temp++;
-            first++;
+            i++;
         }
 
-        if(!(*temp))
-        {
-            *str = '\0';
-        }
-        else
+        if(i > 0)
         {
             size_t length;
-            char *dest;
 
-            length = dc_strlen(env, temp);
-            temp = &str[length - 1];
+            length = dc_strlen(env, str);
+            dc_memmove(env, str, &str[i], length + 1 - i);
+        }
+    }
 
-            while(isspace(*temp))
-            {
-                *temp = '\0';
-                temp--;
-            }
+    return str;
+}
 
-            dest = str;
-            temp = &str[first];
+char *dc_str_right_trim(const struct dc_posix_env *env, char *str)
+{
+    DC_TRACE(env);
 
-            while(*temp)
-            {
-                *dest++ = *temp++;
-            }
+    if(str != NULL)
+    {
+        size_t length;
+        size_t i;
 
-            *dest = '\0';
+        length = dc_strlen(env, str);
+        i = length - 1;
+
+        while(isspace(str[i]))
+        {
+            i--;
+        }
+
+        str[i + 1] = '\0';
+    }
+
+    return str;
+}
+
+char *dc_str_trim(const struct dc_posix_env *env, char *str)
+{
+    DC_TRACE(env);
+
+    if(str != NULL && str[0])
+    {
+        str = dc_str_left_trim(env, str);
+
+        if(str[0])
+        {
+            str = dc_str_right_trim(env, str);
         }
     }
 
@@ -73,6 +91,7 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
 {
     size_t index;
 
+    DC_TRACE(env);
     index = (size_t)dc_strlen(env, str) - 1;
 
     while(index >= 0)
@@ -86,4 +105,63 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
     }
 
     return -1;
+}
+
+char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, size_t n, ...)
+{
+    char **array;
+    va_list args;
+
+    DC_TRACE(env);
+    array = dc_calloc(env, err, n, sizeof(char *));
+
+    if(dc_error_has_error(err))
+    {
+        array = NULL;
+    }
+    else
+    {
+        va_start(args, n);
+
+        for(size_t i = 0; i < n; i++)
+        {
+            char *str;
+
+            str = va_arg(args, char *);
+
+            if(str)
+            {
+                array[i] = dc_strdup(env, err, str);
+
+                if(dc_error_has_error(err))
+                {
+                    // TODO: clean up app memory allocated so far
+                    array = NULL;
+                    break;
+                }
+            }
+        }
+
+        va_end(args);
+    }
+
+    return array;
+}
+
+size_t dc_str_find_all(const struct dc_posix_env *env, const char *str, int c)
+{
+    size_t num;
+
+    DC_TRACE(env);
+    num = 0;
+
+    for(const char *tmp = str; *tmp; tmp++)
+    {
+        if(*tmp == c)
+        {
+            num++;
+        }
+    }
+
+    return num;
 }
