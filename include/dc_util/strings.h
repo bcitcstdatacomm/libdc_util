@@ -20,12 +20,64 @@
 #include <dc_posix/dc_posix_env.h>
 #include <sys/types.h>
 
+/**
+ *
+ * @param env
+ * @param str
+ * @return
+ */
 char *dc_str_left_trim(const struct dc_posix_env *env, char *str);
+
+/**
+ *
+ * @param env
+ * @param str
+ * @return
+ */
 char *dc_str_right_trim(const struct dc_posix_env *env, char *str);
+
+/**
+ *
+ * @param env
+ * @param str
+ * @return
+ */
 char *dc_str_trim(const struct dc_posix_env *env, char *str);
+
+/**
+ *
+ * @param env
+ * @param str
+ * @param c
+ * @return
+ */
 ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c);
+
+/**
+ *
+ * @param env
+ * @param err
+ * @param n
+ * @param ...
+ * @return
+ */
 char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, size_t n, ...);
-void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n, char **parray)
+
+/**
+ *
+ * @param env
+ * @param n
+ * @param parray
+ */
+void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n, char **parray);
+
+/**
+ *
+ * @param env
+ * @param str
+ * @param c
+ * @return
+ */
 size_t dc_str_find_all(const struct dc_posix_env *env, const char *str, int c);
 
 #endif // LIBDC_UTIL_STRINGS_H
