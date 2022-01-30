@@ -25,7 +25,6 @@ char *dc_str_right_trim(const struct dc_posix_env *env, char *str);
 char *dc_str_trim(const struct dc_posix_env *env, char *str);
 ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c);
 char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, size_t n, ...);
-void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n, char **parray);
 size_t dc_str_find_all(const struct dc_posix_env *env, const char *str, int c);
 
 #endif // LIBDC_UTIL_STRINGS_H

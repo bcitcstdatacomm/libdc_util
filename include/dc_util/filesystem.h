@@ -22,6 +22,12 @@
 #include <dc_posix/dc_posix_env.h>
 
 
+/**
+ *
+ * @param env
+ * @param err
+ * @return
+ */
 char *dc_get_working_dir(const struct dc_posix_env *env, struct dc_error *err);
 
 
