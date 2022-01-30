@@ -147,6 +147,7 @@ char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, si
 
     return array;
 }
+
 void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n, char **parray)
 {
     for(size_t i = 0; i < n; i++)
