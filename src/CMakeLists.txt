@@ -23,16 +23,11 @@ set_target_properties(dc_util PROPERTIES
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR})
 
-#find_library(LIB_M m)
-#find_library(LIBDC_ERROR dc_error REQUIRED)
-#find_library(LIBDC_POSIX dc_posix REQUIRED)
+find_library(LIBDC_ERROR dc_error REQUIRED)
+find_library(LIBDC_POSIX dc_posix REQUIRED)
 
-if(LIB_M)
-#    target_link_libraries(libdc_util_test PRIVATE ${LIB_M})
-endif()
-
-#target_link_libraries(dc_util PRIVATE ${LIBDC_ERROR})
-#target_link_libraries(dc_util PRIVATE ${LIBDC_POSIX})
+target_link_libraries(dc_util PUBLIC ${LIBDC_ERROR})
+target_link_libraries(dc_util PUBLIC ${LIBDC_POSIX})
 
 # All users of this library will need at least C17
 target_compile_features(dc_util PUBLIC c_std_17)
