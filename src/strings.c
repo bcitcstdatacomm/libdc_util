@@ -92,16 +92,23 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
     size_t index;
 
     DC_TRACE(env);
-    index = (size_t)dc_strlen(env, str) - 1;
+    index = dc_strlen(env, str);
 
-    while(index != 0)
+    if(index != 0)
     {
-        if(str[index] == c)
-        {
-            return (ssize_t)index;
-        }
+        ssize_t real_index;
 
-        index--;
+        real_index = (ssize_t)index - 1;
+
+        while(real_index` >= 0)
+        {
+            if(str[index] == c)
+            {
+                return (ssize_t)index;
+            }
+
+            index--;
+        }
     }
 
     return -1;
