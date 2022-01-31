@@ -25,9 +25,14 @@ set_target_properties(dc_util PROPERTIES
 
 find_library(LIBDC_ERROR dc_error REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
+find_library(LIB_M m)
 
 target_link_libraries(dc_util PUBLIC ${LIBDC_ERROR})
 target_link_libraries(dc_util PUBLIC ${LIBDC_POSIX})
+
+if (LIB_M)
+    target_link_libraries(dc_util PRIVATE ${LIB_M})
+endif ()
 
 # All users of this library will need at least C17
 target_compile_features(dc_util PUBLIC c_std_17)
