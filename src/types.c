@@ -30,17 +30,17 @@ __attribute__((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env
 
     if(max == 0)
     {
-        size_t bits;
+        size_t      bits;
         long double largest_signed;
-        uintmax_t largest_unsignedA;
-        uintmax_t largest_unsignedB;
+        uintmax_t   largest_unsignedA;
+        uintmax_t   largest_unsignedB;
 
         // TODO: check for errors
-        bits = sizeof(off_t) * CHAR_BIT;
-        largest_signed = powl(2, bits);
+        bits              = sizeof(off_t) * CHAR_BIT;
+        largest_signed    = powl(2, bits);
         largest_unsignedA = (uintmax_t)(largest_signed / 2);
         largest_unsignedB = largest_unsignedA - 1;
-        max = (off_t)largest_unsignedB;
+        max               = (off_t)largest_unsignedB;
     }
 
     return max;
@@ -48,7 +48,7 @@ __attribute__((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env
 
 uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err, const char *str, int base)
 {
-    char *endptr;
+    char     *endptr;
     uintmax_t value;
 
     DC_TRACE(env);
@@ -60,10 +60,10 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
         {
             // TODO: we should not assume 64 bits...
             //                            19          + 6 + 5 + '\0'
-            static const char *format = "%" PRIuMAX " is greater than %" PRIu16;
-            static const size_t size = (19 + 6 + 5 + 1) * sizeof(char);
-            struct dc_error local_err;
-            char *msg;
+            static const char  *format = "%" PRIuMAX " is greater than %" PRIu16;
+            static const size_t size   = (19 + 6 + 5 + 1) * sizeof(char);
+            struct dc_error     local_err;
+            char               *msg;
 
             dc_error_init(&local_err, err->reporter);
             msg = dc_malloc(env, &local_err, size);

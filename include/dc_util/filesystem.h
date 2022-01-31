@@ -1,7 +1,6 @@
 #ifndef LIBDC_UTIL_FILESYSTEM_H
 #define LIBDC_UTIL_FILESYSTEM_H
 
-
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -18,9 +17,7 @@
  * limitations under the License.
  */
 
-
 #include <dc_posix/dc_posix_env.h>
-
 
 /**
  *
@@ -30,5 +27,4 @@
  */
 char *dc_get_working_dir(const struct dc_posix_env *env, struct dc_error *err);
 
-
-#endif //LIBDC_UTIL_FILESYSTEM_H
+#endif // LIBDC_UTIL_FILESYSTEM_H

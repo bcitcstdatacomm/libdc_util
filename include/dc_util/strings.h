@@ -51,7 +51,8 @@ char *dc_str_trim(const struct dc_posix_env *env, char *str);
  * @param c
  * @return
  */
-ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c);
+ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str,
+                         int c);
 
 /**
  *
@@ -61,7 +62,8 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
  * @param ...
  * @return
  */
-char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, size_t n, ...);
+char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err,
+                        size_t n, ...);
 
 /**
  *
@@ -69,7 +71,8 @@ char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, si
  * @param n
  * @param parray
  */
-void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n, char **parray);
+void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n,
+                           char **parray);
 
 /**
  *

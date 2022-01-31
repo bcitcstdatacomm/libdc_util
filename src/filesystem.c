@@ -24,10 +24,10 @@
 
 char *dc_get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
 {
-    long path_max;
+    long   path_max;
     size_t size;
-    char *buf;
-    char *ptr;
+    char  *buf;
+    char  *ptr;
 
     DC_TRACE(env);
 

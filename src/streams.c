@@ -27,28 +27,28 @@ struct dc_stream_copy_info
     bool (*filter)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data);
 
     void (*in_consumer)(const struct dc_posix_env *env,
-                        struct dc_error *err,
-                        const uint8_t *data,
-                        size_t line_count,
-                        size_t file_position,
-                        void *arg);
+                        struct dc_error           *err,
+                        const uint8_t             *data,
+                        size_t                     line_count,
+                        size_t                     file_position,
+                        void                      *arg);
 
     void *in_data;
 
     void (*out_consumer)(const struct dc_posix_env *env,
-                         struct dc_error *err,
-                         const uint8_t *data,
-                         size_t line_count,
-                         size_t file_position,
-                         void *arg);
+                         struct dc_error           *err,
+                         const uint8_t             *data,
+                         size_t                     line_count,
+                         size_t                     file_position,
+                         void                      *arg);
 
     void *out_data;
 };
 
 void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
-                              struct dc_error *err,
-                              uint8_t *data,
-                              size_t *count,
+                              struct dc_error           *err,
+                              uint8_t                   *data,
+                              size_t                    *count,
                               bool (*test)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data))
 {
     DC_TRACE(env);
@@ -74,16 +74,16 @@ void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
 }
 
 void dc_stream_uint8_t(const struct dc_posix_env *env,
-                       struct dc_error *err,
-                       const uint8_t *data,
-                       size_t count,
-                       size_t position,
+                       struct dc_error           *err,
+                       const uint8_t             *data,
+                       size_t                     count,
+                       size_t                     position,
                        void (*apply)(const struct dc_posix_env *env,
-                                     struct dc_error *err,
-                                     const uint8_t *data,
-                                     size_t line_count,
-                                     size_t file_position,
-                                     void *arg),
+                                     struct dc_error           *err,
+                                     const uint8_t             *data,
+                                     size_t                     line_count,
+                                     size_t                     file_position,
+                                     void                      *arg),
                        void *arg)
 {
     DC_TRACE(env);
@@ -96,17 +96,17 @@ void dc_stream_uint8_t(const struct dc_posix_env *env,
 }
 
 void dc_stream_for_each_uint8_t(const struct dc_posix_env *env,
-                                struct dc_error *err,
-                                const uint8_t *data,
-                                size_t count,
-                                size_t position,
+                                struct dc_error           *err,
+                                const uint8_t             *data,
+                                size_t                     count,
+                                size_t                     position,
                                 void (*apply)(const struct dc_posix_env *env,
-                                              struct dc_error *err,
-                                              uint8_t item,
-                                              size_t line_position,
-                                              size_t line_count,
-                                              size_t file_position,
-                                              void *data),
+                                              struct dc_error           *err,
+                                              uint8_t                    item,
+                                              size_t                     line_position,
+                                              size_t                     line_count,
+                                              size_t                     file_position,
+                                              void                      *data),
                                 void *arg)
 {
     DC_TRACE(env);
@@ -124,21 +124,21 @@ void dc_stream_for_each_uint8_t(const struct dc_posix_env *env,
 
 struct dc_stream_copy_info *
 dc_stream_copy_info_create(const struct dc_posix_env *env,
-                           struct dc_error *err,
+                           struct dc_error           *err,
                            bool (*filter)(const struct dc_posix_env *env, struct dc_error *err, uint8_t data),
                            void (*in_consumer)(const struct dc_posix_env *env,
-                                               struct dc_error *err,
-                                               const uint8_t *data,
-                                               size_t line_count,
-                                               size_t file_position,
-                                               void *arg),
+                                               struct dc_error           *err,
+                                               const uint8_t             *data,
+                                               size_t                     line_count,
+                                               size_t                     file_position,
+                                               void                      *arg),
                            void *in_data,
                            void (*out_consumer)(const struct dc_posix_env *env,
-                                                struct dc_error *err,
-                                                const uint8_t *data,
-                                                size_t line_count,
-                                                size_t file_position,
-                                                void *arg),
+                                                struct dc_error           *err,
+                                                const uint8_t             *data,
+                                                size_t                     line_count,
+                                                size_t                     file_position,
+                                                void                      *arg),
                            void *out_data)
 {
     struct dc_stream_copy_info *info;
@@ -148,13 +148,13 @@ dc_stream_copy_info_create(const struct dc_posix_env *env,
 
     if(dc_error_has_no_error(err))
     {
-        info->in_position = 0;
+        info->in_position  = 0;
         info->out_position = 0;
-        info->filter = filter;
-        info->in_consumer = in_consumer;
-        info->in_data = in_data;
+        info->filter       = filter;
+        info->in_consumer  = in_consumer;
+        info->in_data      = in_data;
         info->out_consumer = out_consumer;
-        info->out_data = out_data;
+        info->out_data     = out_data;
     }
 
     return info;
@@ -172,15 +172,15 @@ void dc_stream_copy_info_destroy(const struct dc_posix_env *env, struct dc_strea
     }
 }
 
-bool dc_stream_copy(const struct dc_posix_env *env,
-                    struct dc_error *err,
-                    int fd_in,
-                    int fd_out,
-                    size_t buffer_size,
+bool dc_stream_copy(const struct dc_posix_env  *env,
+                    struct dc_error            *err,
+                    int                         fd_in,
+                    int                         fd_out,
+                    size_t                      buffer_size,
                     struct dc_stream_copy_info *info)
 {
     uint8_t *buffer;
-    bool ret_val;
+    bool     ret_val;
 
     DC_TRACE(env);
     buffer = dc_malloc(env, err, buffer_size);

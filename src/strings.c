@@ -16,9 +16,9 @@
 
 #include "strings.h"
 #include <ctype.h>
+#include <dc_posix/dc_stdlib.h>
 #include <dc_posix/dc_string.h>
 #include <stdarg.h>
-#include <dc_posix/dc_stdlib.h>
 
 char *dc_str_left_trim(const struct dc_posix_env *env, char *str)
 {
@@ -57,7 +57,7 @@ char *dc_str_right_trim(const struct dc_posix_env *env, char *str)
         size_t i;
 
         length = dc_strlen(env, str);
-        i = length - 1;
+        i      = length - 1;
 
         while(isspace(str[i]))
         {
@@ -94,7 +94,7 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
     DC_TRACE(env);
     index = (size_t)dc_strlen(env, str) - 1;
 
-    while(index >= 0)
+    while(index != 0)
     {
         if(str[index] == c)
         {
@@ -109,7 +109,7 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
 
 char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, size_t n, ...)
 {
-    char **array;
+    char  **array;
     va_list args;
 
     DC_TRACE(env);
