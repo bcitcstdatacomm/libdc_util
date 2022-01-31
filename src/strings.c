@@ -100,7 +100,7 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
 
         real_index = (ssize_t)index - 1;
 
-        while(real_index` >= 0)
+        while(real_index >= 0)
         {
             if(str[index] == c)
             {
