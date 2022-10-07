@@ -24,9 +24,11 @@
 
 struct dc_dump_info;
 
+
 /**
  *
  * @param env
+ * @param err
  * @param fd
  * @param file_size
  * @return

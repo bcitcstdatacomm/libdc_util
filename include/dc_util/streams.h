@@ -76,21 +76,26 @@ void dc_stream_for_each_uint8_t(
                   size_t file_position, void *data),
     void *arg);
 
+
 /**
  *
  * @param env
+ * @param err
  * @param fd_in
  * @param fd_out
  * @param buffer_size
  * @param info
+ * @return
  */
 bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err,
                     int fd_in, int fd_out, size_t buffer_size,
                     struct dc_stream_copy_info *info);
 
+
 /**
  *
  * @param env
+ * @param err
  * @param filter
  * @param in_consumer
  * @param in_data

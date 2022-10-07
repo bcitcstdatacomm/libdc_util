@@ -267,7 +267,7 @@ static const char *lookup_control(const struct dc_posix_env *env, uint8_t c)
 
     DC_TRACE(env);
 
-    if(c <= 31)
+    if(c <= DC_32_BITS - 1)
     {
         value = LOW_VALUES[c];
     }

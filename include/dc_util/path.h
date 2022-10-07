@@ -19,9 +19,11 @@
 
 #include <dc_posix/dc_posix_env.h>
 
+
 /**
  *
  * @param env
+ * @param err
  * @param expanded_path
  * @param path
  */

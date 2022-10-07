@@ -72,7 +72,7 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
             {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
-                sprintf(msg, format, value, UINT16_MAX);
+                sprintf(msg, format, value, UINT16_MAX);    // NOLINT(cert-err33-c)
 #pragma GCC diagnostic pop
                 DC_ERROR_RAISE_SYSTEM(err, msg, ERANGE);
                 dc_free(env, msg, size);
