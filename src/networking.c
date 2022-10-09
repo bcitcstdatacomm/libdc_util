@@ -2,6 +2,7 @@
 #include <dc_posix/dc_stdlib.h>
 #include <dc_posix/sys/dc_socket.h>
 #include <netinet/in.h>
+#include <stdio.h>
 
 
 static int getsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option);
@@ -76,6 +77,67 @@ in_port_t dc_inet_get_port(const struct dc_posix_env *env, struct dc_error *err,
     }
 
     return port;
+}
+
+void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, FILE *stream)
+{
+    bool acceptconn;
+    bool broadcast;
+    bool debug;
+    bool dontdoute;
+    bool keepalive;
+    struct linger linger;
+    bool oobinline;
+    int rcvbuf;
+    int dcvlowat;
+    struct timeval rvtimeo;
+    bool reuseaddr;
+    int sndbuf;
+    int sndlowat;
+    struct timeval sndtimeo;
+    int maxconn;
+    int type;
+
+    acceptconn = dc_getsockopt_socket_ACCEPTCONN(env, err, socket_fd);
+    broadcast  = dc_getsockopt_socket_BROADCAST(env, err, socket_fd);
+    debug      = dc_getsockopt_socket_DEBUG(env, err, socket_fd);
+    dontdoute  = dc_getsockopt_socket_DONTROUTE(env, err, socket_fd);
+    keepalive  = dc_getsockopt_socket_KEEPALIVE(env, err, socket_fd);
+//    linger     = dc_getsockopt_socket_LINGER(env, err, socket_fd);
+    oobinline  = dc_getsockopt_socket_OOBINLINE(env, err, socket_fd);
+    rcvbuf     = dc_getsockopt_socket_RCVBUF(env, err, socket_fd);
+    dcvlowat   = dc_getsockopt_socket_RCVLOWAT(env, err, socket_fd);
+    rvtimeo    = dc_getsockopt_socket_RCVTIMEO(env, err, socket_fd);
+    reuseaddr  = dc_getsockopt_socket_REUSEADDR(env, err, socket_fd);
+    sndbuf     = dc_getsockopt_socket_SNDBUF(env, err, socket_fd);
+    sndlowat   = dc_getsockopt_socket_SNDLOWAT(env, err, socket_fd);
+    sndtimeo   = dc_getsockopt_socket_SNDTIMEO(env, err, socket_fd);
+//    maxconn    = dc_getsockopt_socket_MAXCONN(env, err, socket_fd);
+    type       = dc_getsockopt_socket_TYPE(env, err, socket_fd);
+
+    fprintf(stream, "socket (%d):\n", socket_fd);
+    fprintf(stream, "\tTYPE:         %d\n", type);
+    fprintf(stream, "\tACCEPTCONN:   %d\n", acceptconn);
+    fprintf(stream, "\tBROADCAST:    %d\n", broadcast);
+    fprintf(stream, "\tDEBUG:        %d\n", debug);
+    fprintf(stream, "\tDONTROUTE:    %d\n", dontdoute);
+    fprintf(stream, "\tKEEPALIVE:    %d\n", keepalive);
+//    fprintf(stream, "\tLINGER:\n");
+//    fprintf(stream, "\t\ton:       %d\n", linger.l_linger);
+//    fprintf(stream, "\t\tseconds:  %d\n", linger.l_linger);
+    fprintf(stream, "\tOOBINLINE:    %d\n", oobinline);
+    fprintf(stream, "\tRCVBUF:       %d\n", rcvbuf);
+    fprintf(stream, "\tRCVLOWAT :    %d\n", dcvlowat);
+    fprintf(stream, "\tRCVTIMEO:\n");
+    fprintf(stream, "\t\tseconds:  %ld\n", rvtimeo.tv_sec);
+    fprintf(stream, "\t\tuseconds: %ld\n", rvtimeo.tv_usec);
+    fprintf(stream, "\tREUSEADDR:    %d\n", reuseaddr);
+    fprintf(stream, "\tSNDBUF:       %d\n", sndbuf);
+    fprintf(stream, "\tSNDLOWAT:     %d\n", sndlowat);
+    fprintf(stream, "\tSNDTIMEO:\n");
+    fprintf(stream, "\t\tseconds : %ld\n", sndtimeo.tv_sec);
+    fprintf(stream, "\t\tuseconds: %ld\n", sndtimeo.tv_usec);
+//    fprintf(stream, "\tMAXCONN:      %d\n", maxconn);
 }
 
 static inline int getsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option)
@@ -311,7 +373,7 @@ int dc_getsockopt_socket_TYPE(const struct dc_posix_env *env, struct dc_error *e
     return value;
 }
 
-int dc_getsockopt_socket_SOMAXCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_MAXCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -443,7 +505,7 @@ void dc_setsockopt_socket_SNDTIMEO(const struct dc_posix_env *env, struct dc_err
     setsockopt_socket_timeval(env, err, socket_fd, SO_SNDTIMEO, seconds, useconds);
 }
 
-void dc_setsockopt_socket_SOMAXCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
+void dc_setsockopt_socket_MAXCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SOMAXCONN, value);
