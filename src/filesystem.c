@@ -52,7 +52,7 @@ char *dc_get_working_dir(const struct dc_posix_env *env, struct dc_error *err)
 
             if(dc_error_has_error(err))
             {
-                if(err->errno_code == ERANGE)
+                if(dc_error_is_errno(err, ERANGE))
                 {
                     dc_error_reset(err);
                 }

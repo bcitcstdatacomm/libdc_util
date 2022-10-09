@@ -102,11 +102,7 @@ void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **
     dc_free(env, info->line_format, info->line_format_size);
     dc_free(env, info->line_buffer, info->line_buffer_size);
     dc_free(env, info, sizeof(struct dc_dump_info));
-
-    if(env->null_free)
-    {
-        *pinfo = NULL;
-    }
+    *pinfo = NULL;
 }
 
 void dc_dump_dumper(const struct dc_posix_env *env,

@@ -62,13 +62,15 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
             //                            19          + 6 + 5 + '\0'
             static const char  *format = "%" PRIuMAX " is greater than %" PRIu16;
             static const size_t size   = (19 + 6 + 5 + 1) * sizeof(char);
-            struct dc_error     local_err;
-            char               *msg;
+            struct dc_error     *local_err;
+            bool                 reporting;
+            char                *msg;
 
-            dc_error_init(&local_err, err->reporter);
-            msg = dc_malloc(env, &local_err, size);
+            reporting = dc_error_is_reporting(err);
+            local_err = dc_error_create(reporting);
+            msg = dc_malloc(env, local_err, size);
 
-            if(dc_error_has_no_error(&local_err))
+            if(dc_error_has_no_error(local_err))
             {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"

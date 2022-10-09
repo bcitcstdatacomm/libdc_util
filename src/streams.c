@@ -165,11 +165,7 @@ void dc_stream_copy_info_destroy(const struct dc_posix_env *env, struct dc_strea
     DC_TRACE(env);
 
     dc_free(env, *pinfo, sizeof(struct dc_stream_copy_info));
-
-    if(env->null_free)
-    {
-        *pinfo = NULL;
-    }
+    *pinfo = NULL;
 }
 
 bool dc_stream_copy(const struct dc_posix_env  *env,
