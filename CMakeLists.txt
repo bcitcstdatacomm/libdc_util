@@ -19,7 +19,6 @@ set(SOURCE_LIST ${SOURCE_DIR}/bits.c
         ${SOURCE_DIR}/types.c)
 set(HEADER_LIST ${INCLUDE_DIR}/dc_util/bits.h
         ${INCLUDE_DIR}/dc_util/dump.h
-        ${INCLUDE_DIR}/dc_util/exit_codes.h
         ${INCLUDE_DIR}/dc_util/filesystem.h
         ${INCLUDE_DIR}/dc_util/networking.h
         ${INCLUDE_DIR}/dc_util/path.h
