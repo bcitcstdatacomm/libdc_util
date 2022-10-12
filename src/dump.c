@@ -150,6 +150,7 @@ void dc_dump_dumper(const struct dc_posix_env *env,
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"
+        // NOLINTNEXTLINE(cert-err33-c)
         sprintf(info->line_buffer,
                 info->line_format,
                 info->max_position,

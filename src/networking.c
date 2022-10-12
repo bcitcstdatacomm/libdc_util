@@ -86,7 +86,7 @@ void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int
     bool debug;
     bool dontdoute;
     bool keepalive;
-    struct linger linger;
+//    struct linger linger;
     bool oobinline;
     int rcvbuf;
     int dcvlowat;
@@ -95,7 +95,7 @@ void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int
     int sndbuf;
     int sndlowat;
     struct timeval sndtimeo;
-    int maxconn;
+//    int maxconn;
     int type;
 
     acceptconn = dc_getsockopt_socket_ACCEPTCONN(env, err, socket_fd);
@@ -115,6 +115,7 @@ void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int
 //    maxconn    = dc_getsockopt_socket_MAXCONN(env, err, socket_fd);
     type       = dc_getsockopt_socket_TYPE(env, err, socket_fd);
 
+    // NOLINTBEGIN(cert-err33-c)
     fprintf(stream, "socket (%d):\n", socket_fd);
     fprintf(stream, "\tTYPE:         %d\n", type);
     fprintf(stream, "\tACCEPTCONN:   %d\n", acceptconn);
@@ -138,6 +139,7 @@ void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int
     fprintf(stream, "\t\tseconds : %ld\n", sndtimeo.tv_sec);
     fprintf(stream, "\t\tuseconds: %ld\n", sndtimeo.tv_usec);
 //    fprintf(stream, "\tMAXCONN:      %d\n", maxconn);
+    // NOLINTEND(cert-err33-c)
 }
 
 static inline int getsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option)

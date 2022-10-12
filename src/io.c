@@ -16,9 +16,9 @@
 
 
 #include "io.h"
-#include <dc_posix/dc_unistd.h>
 #include <dc_posix/dc_stdlib.h>
 #include <dc_posix/dc_string.h>
+#include <dc_posix/dc_unistd.h>
 #include <stdint.h>
 
 
