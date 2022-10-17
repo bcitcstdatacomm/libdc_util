@@ -1,13 +1,15 @@
 #ifndef LIBDC_UTIL_NETWORKING_H
 #define LIBDC_UTIL_NETWORKING_H
 
+
 #include <dc_posix/arpa/dc_inet.h>
 #include <dc_posix/dc_posix_env.h>
 #include <stdio.h>
+#include <sys/time.h>
+
 
 char *dc_inet_ntop_compat(const struct dc_posix_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr);
 in_port_t dc_inet_get_port(const struct dc_posix_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr);
-
 void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, FILE *stream);
 bool dc_getsockopt_socket_ACCEPTCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd);
 bool dc_getsockopt_socket_BROADCAST(const struct dc_posix_env *env, struct dc_error *err, int socket_fd);
