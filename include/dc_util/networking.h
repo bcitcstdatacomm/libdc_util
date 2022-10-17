@@ -4,8 +4,11 @@
 
 #include <dc_posix/arpa/dc_inet.h>
 #include <dc_posix/dc_posix_env.h>
+#include <netdb.h>
 #include <stdio.h>
+#include <sys/socket.h>
 #include <sys/time.h>
+#include <sys/types.h>
 
 
 char *dc_inet_ntop_compat(const struct dc_posix_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr);
