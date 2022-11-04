@@ -33,7 +33,7 @@ char *dc_str_left_trim(const struct dc_env *env, char *str)
 
         i = 0;
 
-        while(isspace(str[i]))
+        while(dc_isspace(env, str[i]))
         {
             i++;
         }

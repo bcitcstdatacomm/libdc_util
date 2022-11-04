@@ -1,6 +1,7 @@
 #ifndef LIBDC_UTIL_FILESYSTEM_H
 #define LIBDC_UTIL_FILESYSTEM_H
 
+
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -21,6 +22,11 @@
 #include <dc_env/env.h>
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /**
  *
  * @param env
@@ -28,6 +34,11 @@
  * @return
  */
 char *dc_get_working_dir(const struct dc_env *env, struct dc_error *err);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // LIBDC_UTIL_FILESYSTEM_H

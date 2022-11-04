@@ -1,6 +1,7 @@
 #ifndef LIBDC_UTIL_BITS_H
 #define LIBDC_UTIL_BITS_H
 
+
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -18,8 +19,12 @@
  */
 
 #include <dc_env/env.h>
-#include <stdbool.h>
 #include <stdint.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 #define DC_8_BITS 8
@@ -144,6 +149,11 @@ void dc_from_printable_binary16(const struct dc_env *env,
 void dc_from_printable_binary32(const struct dc_env *env,
                                 const char printable[static DC_32_BITS + 1],
                                 bool bits[static DC_32_BITS]);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // LIBDC_UTIL_BITS_H

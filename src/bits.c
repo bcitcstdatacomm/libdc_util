@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+
 #include "bits.h"
+
 
 static void    to_printable_binary(const struct dc_env *env,
                                    size_t                     count,

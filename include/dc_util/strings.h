@@ -1,6 +1,7 @@
 #ifndef LIBDC_UTIL_STRINGS_H
 #define LIBDC_UTIL_STRINGS_H
 
+
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -20,6 +21,11 @@
 
 #include <dc_env/env.h>
 #include <sys/types.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 /**
@@ -84,6 +90,11 @@ void dc_strs_destroy_array(const struct dc_env *env, size_t n,
  * @return
  */
 size_t dc_str_find_all(const struct dc_env *env, const char *str, int c);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // LIBDC_UTIL_STRINGS_H

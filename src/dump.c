@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
+
 #include "bits.h"
 #include "dump.h"
 #include <dc_c/dc_ctype.h>
 #include <dc_c/dc_math.h>
-#include <dc_c/dc_stdio.h>
 #include <dc_c/dc_stdlib.h>
 #include <dc_c/dc_string.h>
 #include <dc_posix/dc_unistd.h>
-#include <stdbool.h>
+#include <stdio.h>
+
 
 static const char *lookup_control(const struct dc_env *env, uint8_t c);
+
 
 struct dc_dump_info
 {
@@ -54,7 +56,7 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_env *env, struct dc_err
         info->line_position    = 1;
 
         // TODO - breaks for 999999999999999997 - 999999999999999999
-        info->max_position     = (size_t)(log10l(file_size) + 1.0L);
+        info->max_position     = (size_t)(dc_log10l(env, err, file_size) + 1.0L);
 
         // NOTE: this should be controlled by a parameter in the future
         // file pos line # line pos : binary : octal : decimal : hex : ascii or
@@ -129,14 +131,14 @@ void dc_dump_dumper(const struct dc_env *env,
         dc_to_binary8(env, item, bits);
         dc_to_printable_binary8(env, bits, binary);
 
-        if(isprint(item))
+        if(dc_isprint(env, item))
         {
             printable[0] = (char)item;
             printable[1] = '\0';
         }
         else
         {
-            if(iscntrl(item))
+            if(dc_iscntrl(env, item))
             {
                 const char *temp;
 

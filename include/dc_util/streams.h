@@ -18,10 +18,14 @@
  * limitations under the License.
  */
 
+
 #include <dc_env/env.h>
-#include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 struct dc_stream_copy_info;
@@ -124,6 +128,11 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(
  */
 void dc_stream_copy_info_destroy(const struct dc_env *env,
                                  struct dc_stream_copy_info **info);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // LIBDC_UTIL_STREAMS_H

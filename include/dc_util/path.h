@@ -1,6 +1,7 @@
 #ifndef LIBDC_UTIL_PATH_H
 #define LIBDC_UTIL_PATH_H
 
+
 /*
  * Copyright 2021-2022 D'Arcy Smith.
  *
@@ -21,6 +22,11 @@
 #include <dc_env/env.h>
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /**
  *
  * @param env
@@ -30,6 +36,11 @@
  */
 void dc_expand_path(const struct dc_env *env, struct dc_error *err,
                     char **expanded_path, const char *path);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // LIBDC_UTIL_PATH_H

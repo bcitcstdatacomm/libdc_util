@@ -18,14 +18,13 @@
 #include "types.h"
 #include <dc_c/dc_inttypes.h>
 #include <dc_c/dc_math.h>
-#include <dc_c/dc_stdio.h>
 #include <dc_c/dc_stdlib.h>
-#include <dc_c/dc_string.h>
 #include <inttypes.h>
 #include <limits.h>
+#include <stdio.h>
 
 
-__attribute__((unused)) inline off_t dc_max_off_t(const struct dc_env *env)
+inline off_t dc_max_off_t(const struct dc_env *env, struct dc_error *err)
 {
     static off_t max = 0;
 
@@ -40,7 +39,7 @@ __attribute__((unused)) inline off_t dc_max_off_t(const struct dc_env *env)
 
         // TODO: check for errors
         bits              = sizeof(off_t) * CHAR_BIT;
-        largest_signed    = powl(2, bits);
+        largest_signed    = dc_powl(env, err, 2, bits);
         largest_unsignedA = (uintmax_t)(largest_signed / 2);
         largest_unsignedB = largest_unsignedA - 1;
         max               = (off_t)largest_unsignedB;

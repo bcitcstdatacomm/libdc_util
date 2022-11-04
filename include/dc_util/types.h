@@ -1,6 +1,7 @@
 #ifndef LIBDC_UTIL_TYPES_H
 #define LIBDC_UTIL_TYPES_H
 
+
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -23,12 +24,18 @@
 #include <sys/types.h>
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /**
  *
  * @param env
+ * @param err
  * @return
  */
-off_t dc_max_off_t(const struct dc_env *env);
+off_t dc_max_off_t(const struct dc_env *env, struct dc_error *err);
 
 /**
  *
@@ -40,6 +47,11 @@ off_t dc_max_off_t(const struct dc_env *env);
  */
 uint16_t dc_uint16_from_str(const struct dc_env *env,
                             struct dc_error *err, const char *str, int base);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif // LIBDC_UTIL_TYPES_H

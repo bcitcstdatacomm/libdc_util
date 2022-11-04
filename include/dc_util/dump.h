@@ -1,6 +1,7 @@
 #ifndef LIBDC_UTIL_DUMP_H
 #define LIBDC_UTIL_DUMP_H
 
+
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -17,10 +18,14 @@
  * limitations under the License.
  */
 
+
 #include <dc_posix/dc_stdlib.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <sys/types.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 struct dc_dump_info;
 
@@ -57,5 +62,11 @@ void dc_dump_info_destroy(const struct dc_env *env,
 void dc_dump_dumper(const struct dc_env *env, struct dc_error *err,
                     const uint8_t *data, size_t count, size_t file_position,
                     void *arg);
+
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif // LIBDC_UTIL_DUMP_H

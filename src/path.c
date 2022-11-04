@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2021 D'Arcy Smith.
+ * Copyright 2021-2022 D'Arcy Smith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+
 #include "path.h"
 #include <dc_c/dc_stdlib.h>
 #include <dc_c/dc_string.h>
 #include <dc_posix/dc_wordexp.h>
+
 
 void dc_expand_path(const struct dc_env *env, struct dc_error *err, char **expanded_path, const char *path)
 {
