@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-#include "types.h"
-#include <dc_posix/dc_inttypes.h>
-#include <dc_posix/dc_stdlib.h>
-#include <dc_posix/dc_string.h>
-#include <limits.h>
-#include <math.h>
-#include <stdio.h>
 
-__attribute__((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env)
+#include "types.h"
+#include <dc_c/dc_inttypes.h>
+#include <dc_c/dc_math.h>
+#include <dc_c/dc_stdio.h>
+#include <dc_c/dc_stdlib.h>
+#include <dc_c/dc_string.h>
+#include <inttypes.h>
+#include <limits.h>
+
+
+__attribute__((unused)) inline off_t dc_max_off_t(const struct dc_env *env)
 {
     static off_t max = 0;
 
@@ -46,7 +49,7 @@ __attribute__((unused)) inline off_t dc_max_off_t(const struct dc_posix_env *env
     return max;
 }
 
-uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err, const char *str, int base)
+uint16_t dc_uint16_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base)
 {
     char     *endptr;
     uintmax_t value;
@@ -77,7 +80,7 @@ uint16_t dc_uint16_from_str(const struct dc_posix_env *env, struct dc_error *err
                 sprintf(msg, format, value, UINT16_MAX);    // NOLINT(cert-err33-c)
 #pragma GCC diagnostic pop
                 DC_ERROR_RAISE_SYSTEM(err, msg, ERANGE);
-                dc_free(env, msg, size);
+                dc_free(env, msg);
             }
             else
             {

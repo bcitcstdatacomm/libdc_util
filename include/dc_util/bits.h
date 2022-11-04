@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-#include <dc_posix/dc_posix_env.h>
+#include <dc_env/env.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -33,7 +33,7 @@
  * @param byte
  * @param bits
  */
-void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte,
+void dc_to_binary8(const struct dc_env *env, uint8_t byte,
                    bool bits[static DC_8_BITS]);
 
 /**
@@ -42,7 +42,7 @@ void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte,
  * @param bytes
  * @param bits
  */
-void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes,
+void dc_to_binary16(const struct dc_env *env, uint16_t bytes,
                     bool bits[static DC_16_BITS]);
 
 
@@ -52,7 +52,7 @@ void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes,
  * @param bytes
  * @param bits
  */
-void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes,
+void dc_to_binary32(const struct dc_env *env, uint32_t bytes,
                     bool bits[static DC_32_BITS]);
 
 
@@ -62,7 +62,7 @@ void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes,
  * @param bits
  * @param val
  */
-void dc_from_binary8(const struct dc_posix_env *env, const bool bits[static DC_8_BITS],
+void dc_from_binary8(const struct dc_env *env, const bool bits[static DC_8_BITS],
                      uint8_t *val);
 
 /**
@@ -71,7 +71,7 @@ void dc_from_binary8(const struct dc_posix_env *env, const bool bits[static DC_8
  * @param bits
  * @param val
  */
-void dc_from_binary16(const struct dc_posix_env *env,
+void dc_from_binary16(const struct dc_env *env,
                       const bool bits[static DC_16_BITS], uint16_t *val);
 
 /**
@@ -80,7 +80,7 @@ void dc_from_binary16(const struct dc_posix_env *env,
  * @param bits
  * @param val
  */
-void dc_from_binary32(const struct dc_posix_env *env,
+void dc_from_binary32(const struct dc_env *env,
                       const bool bits[static DC_32_BITS], uint32_t *val);
 
 
@@ -90,7 +90,7 @@ void dc_from_binary32(const struct dc_posix_env *env,
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary8(const struct dc_posix_env *env,
+void dc_to_printable_binary8(const struct dc_env *env,
                              const bool bits[static DC_8_BITS],
                              char printable[static DC_8_BITS + 1]);
 
@@ -100,7 +100,7 @@ void dc_to_printable_binary8(const struct dc_posix_env *env,
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary16(const struct dc_posix_env *env,
+void dc_to_printable_binary16(const struct dc_env *env,
                               const bool bits[static DC_16_BITS],
                               char printable[static DC_16_BITS + 1]);
 
@@ -110,7 +110,7 @@ void dc_to_printable_binary16(const struct dc_posix_env *env,
  * @param bits
  * @param printable
  */
-void dc_to_printable_binary32(const struct dc_posix_env *env,
+void dc_to_printable_binary32(const struct dc_env *env,
                               const bool bits[static DC_32_BITS],
                               char printable[static DC_32_BITS + 1]);
 
@@ -121,7 +121,7 @@ void dc_to_printable_binary32(const struct dc_posix_env *env,
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary8(const struct dc_posix_env *env,
+void dc_from_printable_binary8(const struct dc_env *env,
                                const char printable[static DC_8_BITS + 1],
                                bool bits[static DC_8_BITS]);
 
@@ -131,7 +131,7 @@ void dc_from_printable_binary8(const struct dc_posix_env *env,
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary16(const struct dc_posix_env *env,
+void dc_from_printable_binary16(const struct dc_env *env,
                                 const char printable[static DC_16_BITS + 1],
                                 bool bits[static DC_16_BITS]);
 
@@ -141,7 +141,7 @@ void dc_from_printable_binary16(const struct dc_posix_env *env,
  * @param printable
  * @param bits
  */
-void dc_from_printable_binary32(const struct dc_posix_env *env,
+void dc_from_printable_binary32(const struct dc_env *env,
                                 const char printable[static DC_32_BITS + 1],
                                 bool bits[static DC_32_BITS]);
 

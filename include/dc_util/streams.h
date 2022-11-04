@@ -1,7 +1,6 @@
 #ifndef LIBDC_UTIL_STREAMS_H
 #define LIBDC_UTIL_STREAMS_H
 
-#include <dc_posix/dc_posix_env.h>
 
 /*
  * Copyright 2021-2021 D'Arcy Smith.
@@ -19,12 +18,14 @@
  * limitations under the License.
  */
 
-#include <dc_posix/dc_posix_env.h>
+#include <dc_env/env.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
+
 struct dc_stream_copy_info;
+
 
 /**
  *
@@ -34,10 +35,10 @@ struct dc_stream_copy_info;
  * @param count
  * @param test
  */
-void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
+void dc_stream_filter_uint8_t(const struct dc_env *env,
                               struct dc_error *err, uint8_t *data,
                               size_t *count,
-                              bool (*test)(const struct dc_posix_env *env,
+                              bool (*test)(const struct dc_env *env,
                                            struct dc_error *err, uint8_t data));
 
 /**
@@ -50,9 +51,9 @@ void dc_stream_filter_uint8_t(const struct dc_posix_env *env,
  * @param apply
  * @param arg
  */
-void dc_stream_uint8_t(const struct dc_posix_env *env, struct dc_error *err,
+void dc_stream_uint8_t(const struct dc_env *env, struct dc_error *err,
                        const uint8_t *data, size_t count, size_t position,
-                       void (*apply)(const struct dc_posix_env *env,
+                       void (*apply)(const struct dc_env *env,
                                      struct dc_error *err, const uint8_t *data,
                                      size_t line_count, size_t file_position,
                                      void *arg),
@@ -69,9 +70,9 @@ void dc_stream_uint8_t(const struct dc_posix_env *env, struct dc_error *err,
  * @param arg
  */
 void dc_stream_for_each_uint8_t(
-    const struct dc_posix_env *env, struct dc_error *err, const uint8_t *data,
+    const struct dc_env *env, struct dc_error *err, const uint8_t *data,
     size_t count, size_t position,
-    void (*apply)(const struct dc_posix_env *env, struct dc_error *err,
+    void (*apply)(const struct dc_env *env, struct dc_error *err,
                   uint8_t item, size_t line_position, size_t line_count,
                   size_t file_position, void *data),
     void *arg);
@@ -87,7 +88,7 @@ void dc_stream_for_each_uint8_t(
  * @param info
  * @return
  */
-bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err,
+bool dc_stream_copy(const struct dc_env *env, struct dc_error *err,
                     int fd_in, int fd_out, size_t buffer_size,
                     struct dc_stream_copy_info *info);
 
@@ -104,14 +105,14 @@ bool dc_stream_copy(const struct dc_posix_env *env, struct dc_error *err,
  * @return
  */
 struct dc_stream_copy_info *dc_stream_copy_info_create(
-    const struct dc_posix_env *env, struct dc_error *err,
-    bool (*filter)(const struct dc_posix_env *env, struct dc_error *err,
+    const struct dc_env *env, struct dc_error *err,
+    bool (*filter)(const struct dc_env *env, struct dc_error *err,
                    uint8_t data),
-    void (*in_consumer)(const struct dc_posix_env *env, struct dc_error *err,
+    void (*in_consumer)(const struct dc_env *env, struct dc_error *err,
                         const uint8_t *data, size_t line_count,
                         size_t file_position, void *arg),
     void *in_data,
-    void (*out_consumer)(const struct dc_posix_env *env, struct dc_error *err,
+    void (*out_consumer)(const struct dc_env *env, struct dc_error *err,
                          const uint8_t *data, size_t line_count,
                          size_t file_position, void *arg),
     void *out_data);
@@ -121,7 +122,8 @@ struct dc_stream_copy_info *dc_stream_copy_info_create(
  * @param env
  * @param info
  */
-void dc_stream_copy_info_destroy(const struct dc_posix_env *env,
+void dc_stream_copy_info_destroy(const struct dc_env *env,
                                  struct dc_stream_copy_info **info);
+
 
 #endif // LIBDC_UTIL_STREAMS_H

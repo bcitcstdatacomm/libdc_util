@@ -17,16 +17,10 @@
  * limitations under the License.
  */
 
-#include <dc_posix/dc_posix_env.h>
+
+#include <dc_env/env.h>
 #include <sys/types.h>
 
-/**
- *
- * @param env
- * @param str
- * @return
- */
-char *dc_str_left_trim(const struct dc_posix_env *env, char *str);
 
 /**
  *
@@ -34,7 +28,7 @@ char *dc_str_left_trim(const struct dc_posix_env *env, char *str);
  * @param str
  * @return
  */
-char *dc_str_right_trim(const struct dc_posix_env *env, char *str);
+char *dc_str_left_trim(const struct dc_env *env, char *str);
 
 /**
  *
@@ -42,7 +36,15 @@ char *dc_str_right_trim(const struct dc_posix_env *env, char *str);
  * @param str
  * @return
  */
-char *dc_str_trim(const struct dc_posix_env *env, char *str);
+char *dc_str_right_trim(const struct dc_env *env, char *str);
+
+/**
+ *
+ * @param env
+ * @param str
+ * @return
+ */
+char *dc_str_trim(const struct dc_env *env, char *str);
 
 /**
  *
@@ -51,7 +53,7 @@ char *dc_str_trim(const struct dc_posix_env *env, char *str);
  * @param c
  * @return
  */
-ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str,
+ssize_t dc_str_find_last(const struct dc_env *env, const char *str,
                          int c);
 
 /**
@@ -62,7 +64,7 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str,
  * @param ...
  * @return
  */
-char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err,
+char **dc_strs_to_array(const struct dc_env *env, struct dc_error *err,
                         size_t n, ...);
 
 /**
@@ -71,7 +73,7 @@ char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err,
  * @param n
  * @param parray
  */
-void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n,
+void dc_strs_destroy_array(const struct dc_env *env, size_t n,
                            char **parray);
 
 /**
@@ -81,6 +83,7 @@ void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n,
  * @param c
  * @return
  */
-size_t dc_str_find_all(const struct dc_posix_env *env, const char *str, int c);
+size_t dc_str_find_all(const struct dc_env *env, const char *str, int c);
+
 
 #endif // LIBDC_UTIL_STRINGS_H

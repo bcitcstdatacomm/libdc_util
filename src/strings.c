@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
+
 #include "strings.h"
-#include <ctype.h>
-#include <dc_posix/dc_stdlib.h>
+#include <dc_c/dc_ctype.h>
+#include <dc_c/dc_stdlib.h>
+#include <dc_c/dc_string.h>
 #include <dc_posix/dc_string.h>
 #include <stdarg.h>
 
-char *dc_str_left_trim(const struct dc_posix_env *env, char *str)
+
+char *dc_str_left_trim(const struct dc_env *env, char *str)
 {
     DC_TRACE(env);
 
@@ -47,7 +50,7 @@ char *dc_str_left_trim(const struct dc_posix_env *env, char *str)
     return str;
 }
 
-char *dc_str_right_trim(const struct dc_posix_env *env, char *str)
+char *dc_str_right_trim(const struct dc_env *env, char *str)
 {
     DC_TRACE(env);
 
@@ -70,7 +73,7 @@ char *dc_str_right_trim(const struct dc_posix_env *env, char *str)
     return str;
 }
 
-char *dc_str_trim(const struct dc_posix_env *env, char *str)
+char *dc_str_trim(const struct dc_env *env, char *str)
 {
     DC_TRACE(env);
 
@@ -87,7 +90,7 @@ char *dc_str_trim(const struct dc_posix_env *env, char *str)
     return str;
 }
 
-ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
+ssize_t dc_str_find_last(const struct dc_env *env, const char *str, int c)
 {
     size_t index;
 
@@ -114,7 +117,7 @@ ssize_t dc_str_find_last(const struct dc_posix_env *env, const char *str, int c)
     return -1;
 }
 
-char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, size_t n, ...)
+char **dc_strs_to_array(const struct dc_env *env, struct dc_error *err, size_t n, ...)
 {
     char  **array;
     va_list args;
@@ -155,19 +158,19 @@ char **dc_strs_to_array(const struct dc_posix_env *env, struct dc_error *err, si
     return array;
 }
 
-void dc_strs_destroy_array(const struct dc_posix_env *env, size_t n, char **parray)
+void dc_strs_destroy_array(const struct dc_env *env, size_t n, char **parray)
 {
     for(size_t i = 0; i < n; i++)
     {
         if(parray[i])
         {
-            dc_free(env, parray[i], dc_strlen(env, parray[i]));
+            dc_free(env, parray[i]);
             parray[i] = NULL;
         }
     }
 }
 
-size_t dc_str_find_all(const struct dc_posix_env *env, const char *str, int c)
+size_t dc_str_find_all(const struct dc_env *env, const char *str, int c)
 {
     size_t num;
 

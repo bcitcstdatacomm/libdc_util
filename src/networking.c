@@ -1,26 +1,26 @@
 #include "networking.h"
-#include <dc_posix/dc_stdlib.h>
+#include <dc_c/dc_stdio.h>
+#include <dc_c/dc_stdlib.h>
 #include <dc_posix/sys/dc_socket.h>
 #include <netinet/in.h>
-#include <stdio.h>
 
 
-static int getsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option);
-static struct linger getsockopt_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option);
-static struct timeval getsockopt_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option);
-static int getsockopt_socket_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option);
-static bool getsockopt_socket_bool(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool option);
-static struct linger getsockopt_socket_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option);
-static struct timeval getsockopt_socket_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option);
-static void setsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option, int value);
-static void setsockopt_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option, int on, int seconds);
-static void setsockopt_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option, time_t seconds, long useconds);
-static void setsockopt_socket_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option, int value);
-static void setsockopt_socket_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option, int on, int seconds);
-static void setsockopt_socket_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option, time_t seconds, long useconds);
+static int getsockopt_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option);
+static struct linger getsockopt_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option);
+static struct timeval getsockopt_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option);
+static int getsockopt_socket_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int option);
+static bool getsockopt_socket_bool(const struct dc_env *env, struct dc_error *err, int socket_fd, bool option);
+static struct linger getsockopt_socket_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int option);
+static struct timeval getsockopt_socket_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int option);
+static void setsockopt_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option, int value);
+static void setsockopt_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option, int on, int seconds);
+static void setsockopt_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option, time_t seconds, long useconds);
+static void setsockopt_socket_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, int value);
+static void setsockopt_socket_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, int on, int seconds);
+static void setsockopt_socket_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, time_t seconds, long useconds);
 
 
-char *dc_inet_ntop_compat(const struct dc_posix_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr)
+char *dc_inet_ntop_compat(const struct dc_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr)
 {
     const void *addr;
     socklen_t addr_str_len;
@@ -56,7 +56,7 @@ char *dc_inet_ntop_compat(const struct dc_posix_env *env, struct dc_error *err, 
     return addr_str;
 }
 
-in_port_t dc_inet_get_port(const struct dc_posix_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr)
+in_port_t dc_inet_get_port(const struct dc_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr)
 {
     in_port_t port;
 
@@ -79,7 +79,7 @@ in_port_t dc_inet_get_port(const struct dc_posix_env *env, struct dc_error *err,
     return port;
 }
 
-void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, FILE *stream)
+void dc_print_sockopts(const struct dc_env *env, struct dc_error *err, int socket_fd, FILE *stream)
 {
     bool acceptconn;
     bool broadcast;
@@ -142,7 +142,7 @@ void dc_print_sockopts(const struct dc_posix_env *env, struct dc_error *err, int
     // NOLINTEND(cert-err33-c)
 }
 
-static inline int getsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option)
+static inline int getsockopt_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option)
 {
     int value;
     socklen_t len;
@@ -153,7 +153,7 @@ static inline int getsockopt_int(const struct dc_posix_env *env, struct dc_error
     return value;
 }
 
-static inline struct linger getsockopt_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option)
+static inline struct linger getsockopt_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option)
 {
     struct linger value;
     socklen_t len;
@@ -164,7 +164,7 @@ static inline struct linger getsockopt_linger(const struct dc_posix_env *env, st
     return value;
 }
 
-static inline struct timeval getsockopt_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option)
+static inline struct timeval getsockopt_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option)
 {
     struct timeval value;
     socklen_t len;
@@ -175,7 +175,7 @@ static inline struct timeval getsockopt_timeval(const struct dc_posix_env *env, 
     return value;
 }
 
-static inline int getsockopt_socket_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option)
+static inline int getsockopt_socket_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int option)
 {
     int value;
 
@@ -185,7 +185,7 @@ static inline int getsockopt_socket_int(const struct dc_posix_env *env, struct d
     return value;
 }
 
-static inline bool getsockopt_socket_bool(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool option)
+static inline bool getsockopt_socket_bool(const struct dc_env *env, struct dc_error *err, int socket_fd, bool option)
 {
     int value;
 
@@ -195,7 +195,7 @@ static inline bool getsockopt_socket_bool(const struct dc_posix_env *env, struct
     return value;
 }
 
-static inline struct linger getsockopt_socket_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option)
+static inline struct linger getsockopt_socket_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int option)
 {
     struct linger value;
 
@@ -205,7 +205,7 @@ static inline struct linger getsockopt_socket_linger(const struct dc_posix_env *
     return value;
 }
 
-static inline struct timeval getsockopt_socket_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option)
+static inline struct timeval getsockopt_socket_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int option)
 {
     struct timeval value;
 
@@ -215,7 +215,7 @@ static inline struct timeval getsockopt_socket_timeval(const struct dc_posix_env
     return value;
 }
 
-bool dc_getsockopt_socket_ACCEPTCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_ACCEPTCONN(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -225,7 +225,7 @@ bool dc_getsockopt_socket_ACCEPTCONN(const struct dc_posix_env *env, struct dc_e
     return value;
 }
 
-bool dc_getsockopt_socket_BROADCAST(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_BROADCAST(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -235,7 +235,7 @@ bool dc_getsockopt_socket_BROADCAST(const struct dc_posix_env *env, struct dc_er
     return value;
 }
 
-bool dc_getsockopt_socket_DEBUG(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_DEBUG(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -245,7 +245,7 @@ bool dc_getsockopt_socket_DEBUG(const struct dc_posix_env *env, struct dc_error 
     return value;
 }
 
-bool dc_getsockopt_socket_DONTROUTE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_DONTROUTE(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -255,7 +255,7 @@ bool dc_getsockopt_socket_DONTROUTE(const struct dc_posix_env *env, struct dc_er
     return value;
 }
 
-int dc_getsockopt_socket_ERROR(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_ERROR(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -265,7 +265,7 @@ int dc_getsockopt_socket_ERROR(const struct dc_posix_env *env, struct dc_error *
     return value;
 }
 
-bool dc_getsockopt_socket_KEEPALIVE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_KEEPALIVE(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -275,7 +275,7 @@ bool dc_getsockopt_socket_KEEPALIVE(const struct dc_posix_env *env, struct dc_er
     return value;
 }
 
-struct linger dc_getsockopt_socket_LINGER(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+struct linger dc_getsockopt_socket_LINGER(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     struct linger value;
 
@@ -285,7 +285,7 @@ struct linger dc_getsockopt_socket_LINGER(const struct dc_posix_env *env, struct
     return value;
 }
 
-bool dc_getsockopt_socket_OOBINLINE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_OOBINLINE(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -295,7 +295,7 @@ bool dc_getsockopt_socket_OOBINLINE(const struct dc_posix_env *env, struct dc_er
     return value;
 }
 
-int dc_getsockopt_socket_RCVBUF(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_RCVBUF(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -305,7 +305,7 @@ int dc_getsockopt_socket_RCVBUF(const struct dc_posix_env *env, struct dc_error 
     return value;
 }
 
-int dc_getsockopt_socket_RCVLOWAT(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_RCVLOWAT(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -315,7 +315,7 @@ int dc_getsockopt_socket_RCVLOWAT(const struct dc_posix_env *env, struct dc_erro
     return value;
 }
 
-struct timeval dc_getsockopt_socket_RCVTIMEO(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+struct timeval dc_getsockopt_socket_RCVTIMEO(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     struct timeval value;
 
@@ -325,7 +325,7 @@ struct timeval dc_getsockopt_socket_RCVTIMEO(const struct dc_posix_env *env, str
     return value;
 }
 
-bool dc_getsockopt_socket_REUSEADDR(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+bool dc_getsockopt_socket_REUSEADDR(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     bool value;
 
@@ -335,7 +335,7 @@ bool dc_getsockopt_socket_REUSEADDR(const struct dc_posix_env *env, struct dc_er
     return value;
 }
 
-int dc_getsockopt_socket_SNDBUF(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_SNDBUF(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -345,7 +345,7 @@ int dc_getsockopt_socket_SNDBUF(const struct dc_posix_env *env, struct dc_error 
     return value;
 }
 
-int dc_getsockopt_socket_SNDLOWAT(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_SNDLOWAT(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -355,7 +355,7 @@ int dc_getsockopt_socket_SNDLOWAT(const struct dc_posix_env *env, struct dc_erro
     return value;
 }
 
-struct timeval dc_getsockopt_socket_SNDTIMEO(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+struct timeval dc_getsockopt_socket_SNDTIMEO(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     struct timeval value;
 
@@ -365,7 +365,7 @@ struct timeval dc_getsockopt_socket_SNDTIMEO(const struct dc_posix_env *env, str
     return value;
 }
 
-int dc_getsockopt_socket_TYPE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_TYPE(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -375,7 +375,7 @@ int dc_getsockopt_socket_TYPE(const struct dc_posix_env *env, struct dc_error *e
     return value;
 }
 
-int dc_getsockopt_socket_MAXCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd)
+int dc_getsockopt_socket_MAXCONN(const struct dc_env *env, struct dc_error *err, int socket_fd)
 {
     int value;
 
@@ -385,13 +385,13 @@ int dc_getsockopt_socket_MAXCONN(const struct dc_posix_env *env, struct dc_error
     return value;
 }
 
-static inline void setsockopt_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option, int value)
+static inline void setsockopt_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option, int value)
 {
     DC_TRACE(env);
     dc_setsockopt(env, err, socket_fd, level, option, &value, sizeof(value));
 }
 
-static inline void setsockopt_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option, int on, int seconds)
+static inline void setsockopt_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option, int on, int seconds)
 {
     struct linger value;
 
@@ -401,7 +401,7 @@ static inline void setsockopt_linger(const struct dc_posix_env *env, struct dc_e
     dc_setsockopt(env, err, socket_fd, level, option, &value, sizeof(value));
 }
 
-static inline void setsockopt_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int level, int option, time_t seconds, long useconds)
+static inline void setsockopt_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option, time_t seconds, long useconds)
 {
     struct timeval value;
 
@@ -411,103 +411,103 @@ static inline void setsockopt_timeval(const struct dc_posix_env *env, struct dc_
     dc_setsockopt(env, err, socket_fd, level, option, &value, sizeof(value));
 }
 
-static inline void setsockopt_socket_int(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option, int value)
+static inline void setsockopt_socket_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, int value)
 {
     DC_TRACE(env);
     setsockopt_int(env, err, socket_fd, SOL_SOCKET, option, value);
 }
 
-static inline void setsockopt_socket_linger(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option, int on, int seconds)
+static inline void setsockopt_socket_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, int on, int seconds)
 {
     DC_TRACE(env);
     setsockopt_linger(env, err, socket_fd, SOL_SOCKET, option, on, seconds);
 }
 
-static inline void setsockopt_socket_timeval(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int option, time_t seconds, long useconds)
+static inline void setsockopt_socket_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, time_t seconds, long useconds)
 {
     DC_TRACE(env);
     setsockopt_timeval(env, err, socket_fd, SOL_SOCKET, option, seconds, useconds);
 }
 
-void dc_setsockopt_socket_BROADCAST(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool value)
+void dc_setsockopt_socket_BROADCAST(const struct dc_env *env, struct dc_error *err, int socket_fd, bool value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_BROADCAST, value);
 }
 
-void dc_setsockopt_socket_DEBUG(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool value)
+void dc_setsockopt_socket_DEBUG(const struct dc_env *env, struct dc_error *err, int socket_fd, bool value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_DEBUG, value);
 }
 
-void dc_setsockopt_socket_DONTROUTE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool value)
+void dc_setsockopt_socket_DONTROUTE(const struct dc_env *env, struct dc_error *err, int socket_fd, bool value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_DONTROUTE, value);
 }
 
-void dc_setsockopt_socket_KEEPALIVE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool value)
+void dc_setsockopt_socket_KEEPALIVE(const struct dc_env *env, struct dc_error *err, int socket_fd, bool value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_KEEPALIVE, value);
 }
 
-void dc_setsockopt_socket_LINGER(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool on, int seconds)
+void dc_setsockopt_socket_LINGER(const struct dc_env *env, struct dc_error *err, int socket_fd, bool on, int seconds)
 {
     DC_TRACE(env);
     setsockopt_socket_linger(env, err, socket_fd, SO_LINGER, on, seconds);
 }
 
-void dc_setsockopt_socket_OOBINLINE(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool value)
+void dc_setsockopt_socket_OOBINLINE(const struct dc_env *env, struct dc_error *err, int socket_fd, bool value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_OOBINLINE, value);
 }
 
-void dc_setsockopt_socket_RCVBUF(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
+void dc_setsockopt_socket_RCVBUF(const struct dc_env *env, struct dc_error *err, int socket_fd, int value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_RCVBUF, value);
 }
 
-void dc_setsockopt_socket_RCVLOWAT(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
+void dc_setsockopt_socket_RCVLOWAT(const struct dc_env *env, struct dc_error *err, int socket_fd, int value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_RCVLOWAT, value);
 }
 
-void dc_setsockopt_socket_RCVTIMEO(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, time_t seconds, long useconds)
+void dc_setsockopt_socket_RCVTIMEO(const struct dc_env *env, struct dc_error *err, int socket_fd, time_t seconds, long useconds)
 {
     DC_TRACE(env);
     setsockopt_socket_timeval(env, err, socket_fd, SO_RCVTIMEO, seconds, useconds);
 }
 
-void dc_setsockopt_socket_REUSEADDR(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, bool value)
+void dc_setsockopt_socket_REUSEADDR(const struct dc_env *env, struct dc_error *err, int socket_fd, bool value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_REUSEADDR, value);
 }
 
-void dc_setsockopt_socket_SNDBUF(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
+void dc_setsockopt_socket_SNDBUF(const struct dc_env *env, struct dc_error *err, int socket_fd, int value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_SNDBUF, value);
 }
 
-void dc_setsockopt_socket_SNDLOWAT(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
+void dc_setsockopt_socket_SNDLOWAT(const struct dc_env *env, struct dc_error *err, int socket_fd, int value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SO_SNDLOWAT, value);
 }
 
-void dc_setsockopt_socket_SNDTIMEO(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, time_t seconds, long useconds)
+void dc_setsockopt_socket_SNDTIMEO(const struct dc_env *env, struct dc_error *err, int socket_fd, time_t seconds, long useconds)
 {
     DC_TRACE(env);
     setsockopt_socket_timeval(env, err, socket_fd, SO_SNDTIMEO, seconds, useconds);
 }
 
-void dc_setsockopt_socket_MAXCONN(const struct dc_posix_env *env, struct dc_error *err, int socket_fd, int value)
+void dc_setsockopt_socket_MAXCONN(const struct dc_env *env, struct dc_error *err, int socket_fd, int value)
 {
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SOMAXCONN, value);

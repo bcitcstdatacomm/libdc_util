@@ -16,12 +16,12 @@
 
 #include "bits.h"
 
-static void    to_printable_binary(const struct dc_posix_env *env,
+static void    to_printable_binary(const struct dc_env *env,
                                    size_t                     count,
                                    bool const                 bits[static count],
                                    char                       printable[static count + 1]);
 
-static void    set_bit(const struct dc_posix_env *env,
+static void    set_bit(const struct dc_env *env,
                        size_t                     position,
                        char const                 printable[static position],
                        bool                       bits[static position]);
@@ -124,7 +124,7 @@ static const uint32_t masks_32[] = {
     MASK_00000001,
 };
 
-void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte, bool bits[static DC_8_BITS])
+void dc_to_binary8(const struct dc_env *env, uint8_t byte, bool bits[static DC_8_BITS])
 {
     DC_TRACE(env);
 
@@ -141,7 +141,7 @@ void dc_to_binary8(const struct dc_posix_env *env, uint8_t byte, bool bits[stati
     }
 }
 
-void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes, bool bits[static DC_16_BITS])
+void dc_to_binary16(const struct dc_env *env, uint16_t bytes, bool bits[static DC_16_BITS])
 {
     DC_TRACE(env);
 
@@ -158,7 +158,7 @@ void dc_to_binary16(const struct dc_posix_env *env, uint16_t bytes, bool bits[st
     }
 }
 
-void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes, bool bits[static DC_32_BITS])
+void dc_to_binary32(const struct dc_env *env, uint32_t bytes, bool bits[static DC_32_BITS])
 {
     DC_TRACE(env);
 
@@ -176,7 +176,7 @@ void dc_to_binary32(const struct dc_posix_env *env, uint32_t bytes, bool bits[st
 }
 
 static void
-to_printable_binary(const struct dc_posix_env *env, size_t count, bool const bits[count], char printable[count + 1])
+to_printable_binary(const struct dc_env *env, size_t count, bool const bits[count], char printable[count + 1])
 {
     DC_TRACE(env);
 
@@ -199,25 +199,25 @@ to_printable_binary(const struct dc_posix_env *env, size_t count, bool const bit
     printable[count] = '\0';
 }
 
-void dc_to_printable_binary8(const struct dc_posix_env *env, bool const bits[static DC_8_BITS], char printable[static DC_8_BITS + 1])
+void dc_to_printable_binary8(const struct dc_env *env, bool const bits[static DC_8_BITS], char printable[static DC_8_BITS + 1])
 {
     DC_TRACE(env);
     to_printable_binary(env, DC_8_BITS, bits, printable);
 }
 
-void dc_to_printable_binary16(const struct dc_posix_env *env, bool const bits[static DC_16_BITS], char printable[static DC_16_BITS + 1])
+void dc_to_printable_binary16(const struct dc_env *env, bool const bits[static DC_16_BITS], char printable[static DC_16_BITS + 1])
 {
     DC_TRACE(env);
     to_printable_binary(env, DC_16_BITS, bits, printable);
 }
 
-void dc_to_printable_binary32(const struct dc_posix_env *env, bool const bits[static DC_32_BITS], char printable[static DC_32_BITS + 1])
+void dc_to_printable_binary32(const struct dc_env *env, bool const bits[static DC_32_BITS], char printable[static DC_32_BITS + 1])
 {
     DC_TRACE(env);
     to_printable_binary(env, DC_32_BITS, bits, printable);
 }
 
-void dc_from_printable_binary8(const struct dc_posix_env *env, char const printable[DC_8_BITS + 1], bool bits[DC_8_BITS])
+void dc_from_printable_binary8(const struct dc_env *env, char const printable[DC_8_BITS + 1], bool bits[DC_8_BITS])
 {
     DC_TRACE(env);
 
@@ -227,7 +227,7 @@ void dc_from_printable_binary8(const struct dc_posix_env *env, char const printa
     }
 }
 
-void dc_from_printable_binary16(const struct dc_posix_env *env, char const printable[static DC_16_BITS + 1], bool bits[static DC_16_BITS])
+void dc_from_printable_binary16(const struct dc_env *env, char const printable[static DC_16_BITS + 1], bool bits[static DC_16_BITS])
 {
     DC_TRACE(env);
 
@@ -237,7 +237,7 @@ void dc_from_printable_binary16(const struct dc_posix_env *env, char const print
     }
 }
 
-void dc_from_printable_binary32(const struct dc_posix_env *env, char const printable[static DC_32_BITS + 1], bool bits[static DC_32_BITS])
+void dc_from_printable_binary32(const struct dc_env *env, char const printable[static DC_32_BITS + 1], bool bits[static DC_32_BITS])
 {
     DC_TRACE(env);
 
@@ -247,7 +247,7 @@ void dc_from_printable_binary32(const struct dc_posix_env *env, char const print
     }
 }
 
-static void set_bit(const struct dc_posix_env *env,
+static void set_bit(const struct dc_env *env,
                     size_t                     position,
                     char const                 printable[static position],
                     bool                       bits[static position])
@@ -270,7 +270,7 @@ static void set_bit(const struct dc_posix_env *env,
     bits[position] = bit;
 }
 
-void dc_from_binary8(const struct dc_posix_env *env, bool const bits[static DC_8_BITS], uint8_t *val)
+void dc_from_binary8(const struct dc_env *env, bool const bits[static DC_8_BITS], uint8_t *val)
 {
     uint32_t value;
 
@@ -289,7 +289,7 @@ void dc_from_binary8(const struct dc_posix_env *env, bool const bits[static DC_8
     *val = (uint8_t)value;
 }
 
-void dc_from_binary16(const struct dc_posix_env *env, bool const bits[static DC_16_BITS], uint16_t *val)
+void dc_from_binary16(const struct dc_env *env, bool const bits[static DC_16_BITS], uint16_t *val)
 {
     uint32_t value;
 
@@ -308,7 +308,7 @@ void dc_from_binary16(const struct dc_posix_env *env, bool const bits[static DC_
     *val = (uint16_t)value;
 }
 
-void dc_from_binary32(const struct dc_posix_env *env, bool const bits[static DC_32_BITS], uint32_t *val)
+void dc_from_binary32(const struct dc_env *env, bool const bits[static DC_32_BITS], uint32_t *val)
 {
     uint32_t value;
 

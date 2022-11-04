@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-#include "dump.h"
 #include "bits.h"
-#include <ctype.h>
-#include <dc_posix/dc_string.h>
+#include "dump.h"
+#include <dc_c/dc_ctype.h>
+#include <dc_c/dc_math.h>
+#include <dc_c/dc_stdio.h>
+#include <dc_c/dc_stdlib.h>
+#include <dc_c/dc_string.h>
 #include <dc_posix/dc_unistd.h>
-#include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
 
-static const char *lookup_control(const struct dc_posix_env *env, uint8_t c);
+static const char *lookup_control(const struct dc_env *env, uint8_t c);
 
 struct dc_dump_info
 {
@@ -37,7 +38,7 @@ struct dc_dump_info
     char  *line_buffer;
 };
 
-struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct dc_error *err, int fd, off_t file_size)
+struct dc_dump_info *dc_dump_info_create(const struct dc_env *env, struct dc_error *err, int fd, off_t file_size)
 {
     struct dc_dump_info *info;
 
@@ -64,7 +65,7 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
 
         if(dc_error_has_error(err))
         {
-            dc_free(env, info, sizeof(struct dc_dump_info));
+            dc_free(env, info);
             info = NULL;
         }
         else
@@ -83,8 +84,8 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
 
             if(dc_error_has_error(err))
             {
-                dc_free(env, info->line_format, info->line_format_size);
-                dc_free(env, info, sizeof(struct dc_dump_info));
+                dc_free(env, info->line_format);
+                dc_free(env, info);
                 info = NULL;
             }
         }
@@ -93,19 +94,19 @@ struct dc_dump_info *dc_dump_info_create(const struct dc_posix_env *env, struct 
     return info;
 }
 
-void dc_dump_info_destroy(const struct dc_posix_env *env, struct dc_dump_info **pinfo)
+void dc_dump_info_destroy(const struct dc_env *env, struct dc_dump_info **pinfo)
 {
     struct dc_dump_info *info;
 
     DC_TRACE(env);
     info = *pinfo;
-    dc_free(env, info->line_format, info->line_format_size);
-    dc_free(env, info->line_buffer, info->line_buffer_size);
-    dc_free(env, info, sizeof(struct dc_dump_info));
+    dc_free(env, info->line_format);
+    dc_free(env, info->line_buffer);
+    dc_free(env, info);
     *pinfo = NULL;
 }
 
-void dc_dump_dumper(const struct dc_posix_env *env,
+void dc_dump_dumper(const struct dc_env *env,
                     struct dc_error           *err,
                     const uint8_t             *data,
                     size_t                     count,
@@ -188,7 +189,7 @@ void dc_dump_dumper(const struct dc_posix_env *env,
     }
 }
 
-static const char *lookup_control(const struct dc_posix_env *env, uint8_t c)
+static const char *lookup_control(const struct dc_env *env, uint8_t c)
 {
     // https://en.wikipedia.org/wiki/List_of_Unicode_characters#Control_codes
     static const char *LOW_VALUES[] = {

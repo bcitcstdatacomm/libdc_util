@@ -16,13 +16,13 @@
 
 
 #include "io.h"
-#include <dc_posix/dc_stdlib.h>
-#include <dc_posix/dc_string.h>
+#include <dc_c/dc_stdlib.h>
+#include <dc_c/dc_string.h>
 #include <dc_posix/dc_unistd.h>
 #include <stdint.h>
 
 
-size_t dc_read_fully(const struct dc_posix_env *env, struct dc_error *err, int fd, void *buf, size_t nbytes)
+size_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, void *buf, size_t nbytes)
 {
     size_t bytes_read;
     uint8_t *bytes;

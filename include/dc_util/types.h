@@ -17,16 +17,18 @@
  * limitations under the License.
  */
 
-#include <dc_posix/dc_posix_env.h>
+
+#include <dc_env/env.h>
 #include <stdint.h>
 #include <sys/types.h>
+
 
 /**
  *
  * @param env
  * @return
  */
-off_t dc_max_off_t(const struct dc_posix_env *env);
+off_t dc_max_off_t(const struct dc_env *env);
 
 /**
  *
@@ -36,7 +38,8 @@ off_t dc_max_off_t(const struct dc_posix_env *env);
  * @param base
  * @return
  */
-uint16_t dc_uint16_from_str(const struct dc_posix_env *env,
+uint16_t dc_uint16_from_str(const struct dc_env *env,
                             struct dc_error *err, const char *str, int base);
+
 
 #endif // LIBDC_UTIL_TYPES_H

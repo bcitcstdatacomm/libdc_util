@@ -18,7 +18,7 @@
  */
 
 
-#include <dc_posix/dc_posix_env.h>
+#include <dc_env/env.h>
 #include <stddef.h>
 #include <sys/types.h>
 
@@ -32,7 +32,7 @@
  * @param nbytes
  * @return
  */
-size_t dc_read_fully(const struct dc_posix_env *env, struct dc_error *err, int fd, void *buf, size_t nbytes);
+size_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, void *buf, size_t nbytes);
 
 
 #endif // LIBDC_UTIL_IO_H
