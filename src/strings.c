@@ -62,7 +62,7 @@ char *dc_str_right_trim(const struct dc_env *env, char *str)
         length = dc_strlen(env, str);
         i      = length - 1;
 
-        while(isspace(str[i]))
+        while(dc_isspace(env, str[i]))
         {
             i--;
         }

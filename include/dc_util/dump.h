@@ -20,6 +20,7 @@
 
 
 #include <dc_posix/dc_stdlib.h>
+#include <sys/types.h>
 
 
 #ifdef __cplusplus
