@@ -35,11 +35,11 @@ char *dc_get_working_dir(const struct dc_env *env, struct dc_error *err)
 
     if(path_max == -1)
     {
-        size = 1024;
+        size = 1025;
     }
     else
     {
-        size = (size_t)path_max;
+        size = (size_t)path_max + 1;
     }
 
     for(buf = ptr = NULL; ptr == NULL; size *= 2)
