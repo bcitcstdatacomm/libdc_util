@@ -19,11 +19,13 @@ find_library(LIBCGREEN cgreen REQUIRED)
 find_library(LIBDC_ERROR dc_error REQUIRED)
 find_library(LIBDC_ENV dc_env REQUIRED)
 find_library(LIBDC_C dc_c REQUIRED)
+find_library(LIBDC_POSIX dc_posix REQUIRED)
 
 target_link_libraries(libdc_util_test PRIVATE ${LIBCGREEN})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_ERROR})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_ENV})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_C})
+target_link_libraries(libdc_util_test PRIVATE ${LIBDC_POSIX})
 
 add_test(NAME libdc_util_test COMMAND libdc_posix_test)
 
