@@ -20,6 +20,7 @@
 
 
 #include <dc_env/env.h>
+#include <netinet/in.h>
 #include <stdint.h>
 #include <sys/types.h>
 
