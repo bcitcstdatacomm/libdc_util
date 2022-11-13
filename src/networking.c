@@ -15,10 +15,11 @@
  */
 
 
-#include "networking.h"
+#include "dc_util/networking.h"
 #include <dc_c/dc_stdlib.h>
 #include <dc_posix/arpa/dc_inet.h>
 #include <dc_posix/sys/dc_socket.h>
+// #include <dc_unix/dc_ifaddrs.h>
 
 
 static int getsockopt_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option);
@@ -35,6 +36,46 @@ static void setsockopt_socket_int(const struct dc_env *env, struct dc_error *err
 static void setsockopt_socket_linger(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, int on, int seconds);
 static void setsockopt_socket_timeval(const struct dc_env *env, struct dc_error *err, int socket_fd, int option, time_t seconds, long useconds);
 
+
+/*
+struct sockaddr *foo(const struct dc_env *env, struct dc_error *err, sa_family_t family)
+{
+    struct ifaddrs *ifap;
+
+    dc_getifaddrs(env, err, &ifap);
+
+    for(struct ifaddrs *tmp = ifap; tmp != NULL; tmp = tmp->ifa_next)
+    {
+        struct sockaddr *addr;
+        char addressOutputBuffer[INET6_ADDRSTRLEN];
+
+        if(tmp->ifa_addr->sa_family == AF_INET)
+        {
+            addr = (struct sockaddr *)&((struct sockaddr_in *)tmp->ifa_addr)->sin_addr;
+        }
+        else if(tmp->ifa_addr->sa_family == AF_INET6)
+        {
+            addr = (struct sockaddr *)&((struct sockaddr_in6 *)tmp->ifa_addr)->sin6_addr;
+        }
+        else
+        {
+            addr = NULL;
+        }
+
+        if(addr)
+        {
+            dc_inet_ntop(env, err, tmp->ifa_addr->sa_family,
+                         addr,
+                         addressOutputBuffer,
+                         sizeof(addressOutputBuffer));
+            printf("%s\n", tmp->ifa_name);
+            printf("%s\n", addressOutputBuffer);
+        }
+    }
+
+    dc_freeifaddrs(env, ifap);
+}
+*/
 
 char *dc_inet_ntop_compat(const struct dc_env *env, struct dc_error *err, const struct sockaddr_storage *sockaddr)
 {

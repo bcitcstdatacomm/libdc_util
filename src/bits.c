@@ -15,7 +15,7 @@
  */
 
 
-#include "bits.h"
+#include "dc_util/bits.h"
 
 
 static void    to_printable_binary(const struct dc_env *env,

@@ -15,8 +15,8 @@
  */
 
 
-#include "bits.h"
-#include "dump.h"
+#include "dc_util/bits.h"
+#include "dc_util/dump.h"
 #include <dc_c/dc_ctype.h>
 #include <dc_c/dc_math.h>
 #include <dc_c/dc_stdlib.h>

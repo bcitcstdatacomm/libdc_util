@@ -45,8 +45,17 @@ off_t dc_max_off_t(const struct dc_env *env, struct dc_error *err);
  * @param base
  * @return
  */
-uint16_t dc_uint16_from_str(const struct dc_env *env,
-                            struct dc_error *err, const char *str, int base);
+uint16_t dc_uint16_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base);
+
+/**
+ *
+ * @param env
+ * @param err
+ * @param str
+ * @param base
+ * @return
+ */
+in_port_t dc_in_port_t_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base);
 
 
 #ifdef __cplusplus

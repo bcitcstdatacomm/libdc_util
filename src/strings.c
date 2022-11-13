@@ -15,7 +15,7 @@
  */
 
 
-#include "strings.h"
+#include "dc_util/strings.h"
 #include <dc_c/dc_ctype.h>
 #include <dc_c/dc_stdlib.h>
 #include <dc_c/dc_string.h>

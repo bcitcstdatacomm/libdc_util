@@ -15,7 +15,7 @@
  */
 
 
-#include "types.h"
+#include "dc_util/types.h"
 #include <dc_c/dc_inttypes.h>
 #include <dc_c/dc_math.h>
 #include <dc_c/dc_stdlib.h>
@@ -95,4 +95,13 @@ uint16_t dc_uint16_from_str(const struct dc_env *env, struct dc_error *err, cons
     }
 
     return (uint16_t)value;
+}
+
+in_port_t dc_in_port_t_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base)
+{
+    in_port_t value;
+
+    value = dc_uint16_from_str(env, err, str, base);
+
+    return value;
 }

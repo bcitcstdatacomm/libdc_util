@@ -29,6 +29,7 @@ set(HEADER_LIST ${INCLUDE_DIR}/dc_util/bits.h
         ${INCLUDE_DIR}/dc_util/path.h
         ${INCLUDE_DIR}/dc_util/streams.h
         ${INCLUDE_DIR}/dc_util/strings.h
+        ${INCLUDE_DIR}/dc_util/sysexits.h
         ${INCLUDE_DIR}/dc_util/types.h
         )
 

@@ -15,7 +15,7 @@
  */
 
 
-#include "streams.h"
+#include "dc_util/streams.h"
 #include <dc_c/dc_stdlib.h>
 #include <dc_posix/dc_unistd.h>
 
