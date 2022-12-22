@@ -221,7 +221,18 @@ target_link_libraries(dc_util PUBLIC ${LIBDC_ENV})
 target_link_libraries(dc_util PUBLIC ${LIBDC_C})
 target_link_libraries(dc_util PUBLIC ${LIBDC_POSIX})
 
-install(TARGETS dc_util LIBRARY DESTINATION lib)
+get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
+
+if ("${LIB64}" STREQUAL "TRUE")
+    set(LIBSUFFIX 64)
+else()
+    set(LIBSUFFIX "")
+endif()
+
+set(INSTALL_LIB_DIR lib${LIBSUFFIX} CACHE PATH "Installation directory for libraries")
+mark_as_advanced(INSTALL_LIB_DIR)
+
+install(TARGETS dc_util LIBRARY DESTINATION ${INSTALL_LIB_DIR})
 install(FILES ${HEADER_LIST} DESTINATION include/dc_util)
 
 add_dependencies(dc_util doxygen)
