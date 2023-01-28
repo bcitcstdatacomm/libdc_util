@@ -582,25 +582,32 @@ char *dc_get_ip_addresses_by_interface(struct dc_env *env, struct dc_error *err,
     char *address;
 
     DC_TRACE(env);
-    dc_getifaddrs(env, err, &ifaddr);
     address = NULL;
+    dc_getifaddrs(env, err, &ifaddr);
 
-    for(ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
+    if(dc_error_has_no_error(err))
     {
-        if(ifa->ifa_addr == NULL)
+        for(ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
         {
-            continue;
+            if(ifa->ifa_addr == NULL)
+            {
+                continue;
+            }
+
+            if(dc_strcmp(env, ifa->ifa_name, interface_name) == 0 && ifa->ifa_addr->sa_family == family)
+            {
+                dc_getnameinfo(env, err, ifa->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+
+                if(dc_error_has_no_error(err))
+                {
+                    address = dc_strdup(env, err, host);
+                    break;
+                }
+            }
         }
 
-        if(dc_strcmp(env, ifa->ifa_name, interface_name) == 0 && ifa->ifa_addr->sa_family == family)
-        {
-            dc_getnameinfo(env, err, ifa->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
-            address = dc_strdup(env, err, host);
-            break;
-        }
+        dc_freeifaddrs(env, ifaddr);
     }
-
-    freeifaddrs(ifaddr);
 
     return address;
 }
@@ -612,58 +619,53 @@ char *dc_get_default_interface(struct dc_env *env, struct dc_error *err, int fam
     char *name;
 
     DC_TRACE(env);
-    dc_getifaddrs(env, err, &ifaddr);
     name = NULL;
+    dc_getifaddrs(env, err, &ifaddr);
 
-    for(ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
+    if(dc_error_has_no_error(err))
     {
-        if(ifa->ifa_addr == NULL)
+        for(ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
         {
-            continue;
-        }
-
-        if((ifa->ifa_flags & (unsigned int)IFF_UP) &&
-           (ifa->ifa_flags & (unsigned int)IFF_RUNNING) &&
-           (!(ifa->ifa_flags & (unsigned int)IFF_LOOPBACK)) &&
-           #ifndef __APPLE__
-           (ifa->ifa_flags & (unsigned int)IFF_POINTOPOINT) &&
-           #endif
-           (ifa->ifa_addr->sa_family == family))
-        {
-            bool found;
-
-            found = false;
-
-            if(ifa->ifa_addr->sa_family == AF_INET)
+            if(ifa->ifa_addr == NULL)
             {
-#ifndef __APPLE__
-                struct sockaddr_in *sin = (struct sockaddr_in *) ifa->ifa_dstaddr;
+                continue;
+            }
 
-                if(sin->sin_addr.s_addr == htonl(INADDR_ANY))
-#endif
+            printf("%s\n", ifa->ifa_name);
+            printf("\tIFF_UP       %d\n", ifa->ifa_flags & (unsigned int)IFF_UP);
+            printf("\tIFF_RUNNING  %d\n", ifa->ifa_flags & (unsigned int)IFF_RUNNING);
+            printf("\tIFF_LOOPBACK %d\n", !(ifa->ifa_flags & (unsigned int)IFF_LOOPBACK));
+            printf("\tfamily       %d\n", ifa->ifa_addr->sa_family == family);
+
+            if((ifa->ifa_flags & (unsigned int)IFF_UP) &&
+               (ifa->ifa_flags & (unsigned int)IFF_RUNNING) &&
+               (!(ifa->ifa_flags & (unsigned int)IFF_LOOPBACK)) &&
+               (ifa->ifa_addr->sa_family == family))
+            {
+                bool found;
+
+                found = false;
+
+                if(ifa->ifa_addr->sa_family == AF_INET)
                 {
                     found = true;
                 }
-            }
-            else if(ifa->ifa_addr->sa_family == AF_INET6)
-            {
-                struct sockaddr_in6 *sin = (struct sockaddr_in6 *) ifa->ifa_dstaddr;
-
-                if(IN6_IS_ADDR_UNSPECIFIED(&sin->sin6_addr))
+                else if(ifa->ifa_addr->sa_family == AF_INET6)
                 {
                     found = true;
                 }
-            }
 
-            if(found)
-            {
-                name = dc_strdup(env, err, ifa->ifa_name);
-                break;
+                if(found)
+                {
+                    name = dc_strdup(env, err, ifa->ifa_name);
+                    break;
+                }
             }
         }
+
+        dc_freeifaddrs(env, ifaddr);
     }
 
-    freeifaddrs(ifaddr);
 
     return name;
 }
