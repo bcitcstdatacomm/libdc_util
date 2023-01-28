@@ -1,9 +1,9 @@
-#ifndef LIBDC_UTIL_IO_H
-#define LIBDC_UTIL_IO_H
+#ifndef LIBDC_UTIL_BITS_H
+#define LIBDC_UTIL_BITS_H
 
 
 /*
- * Copyright 2021-2021 D'Arcy Smith.
+ * Copyright 2023-2023 D'Arcy Smith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,8 @@
  * limitations under the License.
  */
 
-
 #include <dc_env/env.h>
-#include <sys/types.h>
+#include <stdint.h>
 
 
 #ifdef __cplusplus
@@ -32,23 +31,10 @@ extern "C" {
  *
  * @param env
  * @param err
- * @param fd
- * @param buf
- * @param nbytes
+ * @param if_missing
  * @return
  */
-ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len);
-
-/**
- *
- * @param env
- * @param err
- * @param fd
- * @param buffer
- * @param len
- * @return
- */
-ssize_t dc_read_fully(struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len);
+int dc_get_number_of_processors(struct dc_env *env, struct dc_error *err, int if_missing);
 
 
 #ifdef __cplusplus
@@ -56,4 +42,4 @@ ssize_t dc_read_fully(struct dc_env *env, struct dc_error *err, int fd, void *bu
 #endif
 
 
-#endif // LIBDC_UTIL_IO_H
+#endif // LIBDC_UTIL_BITS_H

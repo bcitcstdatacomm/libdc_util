@@ -17,9 +17,13 @@
 
 #include "dc_util/networking.h"
 #include <dc_c/dc_stdlib.h>
+#include <dc_c/dc_string.h>
 #include <dc_posix/arpa/dc_inet.h>
+#include <dc_posix/dc_netdb.h>
+#include <dc_posix/dc_string.h>
 #include <dc_posix/sys/dc_socket.h>
-// #include <dc_unix/dc_ifaddrs.h>
+#include <dc_unix/dc_ifaddrs.h>
+#include <net/if.h>
 
 
 static int getsockopt_int(const struct dc_env *env, struct dc_error *err, int socket_fd, int level, int option);
@@ -569,3 +573,98 @@ void dc_setsockopt_socket_MAXCONN(const struct dc_env *env, struct dc_error *err
     DC_TRACE(env);
     setsockopt_socket_int(env, err, socket_fd, SOMAXCONN, value);
 }
+
+char *dc_get_ip_addresses_by_interface(struct dc_env *env, struct dc_error *err, const char *interface_name, int family)
+{
+    struct ifaddrs *ifaddr;
+    struct ifaddrs *ifa;
+    char host[NI_MAXHOST];
+    char *address;
+
+    DC_TRACE(env);
+    dc_getifaddrs(env, err, &ifaddr);
+    address = NULL;
+
+    for(ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
+    {
+        if(ifa->ifa_addr == NULL)
+        {
+            continue;
+        }
+
+        if(dc_strcmp(env, ifa->ifa_name, interface_name) == 0 && ifa->ifa_addr->sa_family == family)
+        {
+            dc_getnameinfo(env, err, ifa->ifa_addr, sizeof(struct sockaddr_in), host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+            address = dc_strdup(env, err, host);
+            break;
+        }
+    }
+
+    freeifaddrs(ifaddr);
+
+    return address;
+}
+
+char *dc_get_default_interface(struct dc_env *env, struct dc_error *err, int family)
+{
+    struct ifaddrs *ifaddr;
+    struct ifaddrs *ifa;
+    char *name;
+
+    DC_TRACE(env);
+    dc_getifaddrs(env, err, &ifaddr);
+    name = NULL;
+
+    for(ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next)
+    {
+        if(ifa->ifa_addr == NULL)
+        {
+            continue;
+        }
+
+        if((ifa->ifa_flags & (unsigned int)IFF_UP) &&
+           (ifa->ifa_flags & (unsigned int)IFF_RUNNING) &&
+           (!(ifa->ifa_flags & (unsigned int)IFF_LOOPBACK)) &&
+           #ifndef __APPLE__
+           (ifa->ifa_flags & (unsigned int)IFF_POINTOPOINT) &&
+           #endif
+           (ifa->ifa_addr->sa_family == family))
+        {
+            bool found;
+
+            found = false;
+
+            if(ifa->ifa_addr->sa_family == AF_INET)
+            {
+#ifndef __APPLE__
+                struct sockaddr_in *sin = (struct sockaddr_in *) ifa->ifa_dstaddr;
+
+                if(sin->sin_addr.s_addr == htonl(INADDR_ANY))
+#endif
+                {
+                    found = true;
+                }
+            }
+            else if(ifa->ifa_addr->sa_family == AF_INET6)
+            {
+                struct sockaddr_in6 *sin = (struct sockaddr_in6 *) ifa->ifa_dstaddr;
+
+                if(IN6_IS_ADDR_UNSPECIFIED(&sin->sin6_addr))
+                {
+                    found = true;
+                }
+            }
+
+            if(found)
+            {
+                name = dc_strdup(env, err, ifa->ifa_name);
+                break;
+            }
+        }
+    }
+
+    freeifaddrs(ifaddr);
+
+    return name;
+}
+

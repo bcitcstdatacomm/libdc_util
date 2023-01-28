@@ -16,42 +16,50 @@
 
 
 #include "dc_util/io.h"
-#include <dc_c/dc_stdlib.h>
 #include <dc_c/dc_string.h>
 #include <dc_posix/dc_unistd.h>
 #include <stdint.h>
 
 
-size_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, void *buf, size_t nbytes)
+ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len)
 {
-    size_t bytes_read;
-    uint8_t *bytes;
+    ssize_t total_bytes_write = 0;
 
-    DC_TRACE(env);
-    bytes_read = 0;
-    bytes = dc_malloc(env, err, nbytes);
-
-    if(dc_error_has_no_error(err))
+    while(total_bytes_write < (ssize_t)len)
     {
-        while(bytes_read < nbytes)
+        ssize_t bytes_written;
+
+        bytes_written = dc_write(env, err, fd, (const uint8_t *)buffer + total_bytes_write, len - total_bytes_write);
+
+        if(dc_error_has_error(err))
         {
-            ssize_t nread;
-
-            nread = dc_read(env, err, fd, &bytes[bytes_read], nbytes - bytes_read);
-
-            if(dc_error_has_error(err))
-            {
-                break;
-            }
-
-            bytes_read += nread;
+            break;
         }
 
-        if(dc_error_has_no_error(err))
-        {
-            dc_memcpy(env, buf, bytes, bytes_read);
-        }
+        total_bytes_write += bytes_written;
     }
 
-    return bytes_read;
+    return total_bytes_write;
 }
+
+ssize_t dc_read_fully(struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len)
+{
+    ssize_t total_bytes_read = 0;
+
+    while (total_bytes_read < (ssize_t)len)
+    {
+        ssize_t bytes_read;
+
+        bytes_read = dc_read(env, err, fd, (uint8_t *)buffer + total_bytes_read, len - total_bytes_read);
+
+        if(dc_error_has_error(err))
+        {
+            break;
+        }
+
+        total_bytes_read += bytes_read;
+    }
+
+    return total_bytes_read;
+}
+

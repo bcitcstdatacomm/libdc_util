@@ -1,7 +1,3 @@
-#ifndef LIBDC_UTIL_IO_H
-#define LIBDC_UTIL_IO_H
-
-
 /*
  * Copyright 2021-2021 D'Arcy Smith.
  *
@@ -19,41 +15,21 @@
  */
 
 
-#include <dc_env/env.h>
-#include <sys/types.h>
+#include "dc_util/system.h"
+#include <dc_posix/dc_unistd.h>
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+int dc_get_number_of_processors(struct dc_env *env, struct dc_error *err, int if_missing)
+{
+    int n_processors;
 
+    DC_TRACE(env);
+    n_processors = (int)dc_sysconf(env, err, _SC_NPROCESSORS_ONLN);
 
-/**
- *
- * @param env
- * @param err
- * @param fd
- * @param buf
- * @param nbytes
- * @return
- */
-ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len);
+    if(dc_error_has_error(err))
+    {
+        n_processors = if_missing;
+    }
 
-/**
- *
- * @param env
- * @param err
- * @param fd
- * @param buffer
- * @param len
- * @return
- */
-ssize_t dc_read_fully(struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len);
-
-
-#ifdef __cplusplus
+    return n_processors;
 }
-#endif
-
-
-#endif // LIBDC_UTIL_IO_H

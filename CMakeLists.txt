@@ -24,6 +24,7 @@ set(SOURCE_LIST ${SOURCE_DIR}/bits.c
         ${SOURCE_DIR}/path.c
         ${SOURCE_DIR}/streams.c
         ${SOURCE_DIR}/strings.c
+        ${SOURCE_DIR}/system.c
         ${SOURCE_DIR}/types.c)
 set(HEADER_LIST ${INCLUDE_DIR}/dc_util/bits.h
         ${INCLUDE_DIR}/dc_util/dump.h
@@ -34,6 +35,7 @@ set(HEADER_LIST ${INCLUDE_DIR}/dc_util/bits.h
         ${INCLUDE_DIR}/dc_util/streams.h
         ${INCLUDE_DIR}/dc_util/strings.h
         ${INCLUDE_DIR}/dc_util/sysexits.h
+        ${INCLUDE_DIR}/dc_util/system.h
         ${INCLUDE_DIR}/dc_util/types.h
         )
 
@@ -215,11 +217,13 @@ find_library(LIBDC_ERROR dc_error REQUIRED)
 find_library(LIBDC_ENV dc_env REQUIRED)
 find_library(LIBDC_C dc_c REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
+find_library(LIBDC_UNIX dc_unix REQUIRED)
 
 target_link_libraries(dc_util PUBLIC ${LIBDC_ERROR})
 target_link_libraries(dc_util PUBLIC ${LIBDC_ENV})
 target_link_libraries(dc_util PUBLIC ${LIBDC_C})
 target_link_libraries(dc_util PUBLIC ${LIBDC_POSIX})
+target_link_libraries(dc_util PUBLIC ${LIBDC_UNIX})
 
 get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
 
