@@ -34,7 +34,7 @@ extern "C" {
  * @param if_missing
  * @return
  */
-int dc_get_number_of_processors(struct dc_env *env, struct dc_error *err, int if_missing);
+int dc_get_number_of_processors(const struct dc_env *env, struct dc_error *err, int if_missing);
 
 
 #ifdef __cplusplus

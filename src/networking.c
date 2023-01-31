@@ -574,7 +574,7 @@ void dc_setsockopt_socket_MAXCONN(const struct dc_env *env, struct dc_error *err
     setsockopt_socket_int(env, err, socket_fd, SOMAXCONN, value);
 }
 
-char *dc_get_ip_addresses_by_interface(struct dc_env *env, struct dc_error *err, const char *interface_name, int family)
+char *dc_get_ip_addresses_by_interface(const struct dc_env *env, struct dc_error *err, const char *interface_name, int family)
 {
     struct ifaddrs *ifaddr;
     struct ifaddrs *ifa;
@@ -612,7 +612,7 @@ char *dc_get_ip_addresses_by_interface(struct dc_env *env, struct dc_error *err,
     return address;
 }
 
-char *dc_get_default_interface(struct dc_env *env, struct dc_error *err, int family)
+char *dc_get_default_interface(const struct dc_env *env, struct dc_error *err, int family)
 {
     struct ifaddrs *ifaddr;
     struct ifaddrs *ifa;
@@ -630,12 +630,6 @@ char *dc_get_default_interface(struct dc_env *env, struct dc_error *err, int fam
             {
                 continue;
             }
-
-            printf("%s\n", ifa->ifa_name);
-            printf("\tIFF_UP       %d\n", ifa->ifa_flags & (unsigned int)IFF_UP);
-            printf("\tIFF_RUNNING  %d\n", ifa->ifa_flags & (unsigned int)IFF_RUNNING);
-            printf("\tIFF_LOOPBACK %d\n", !(ifa->ifa_flags & (unsigned int)IFF_LOOPBACK));
-            printf("\tfamily       %d\n", ifa->ifa_addr->sa_family == family);
 
             if((ifa->ifa_flags & (unsigned int)IFF_UP) &&
                (ifa->ifa_flags & (unsigned int)IFF_RUNNING) &&

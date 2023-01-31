@@ -58,6 +58,18 @@ uint16_t dc_uint8_from_str(const struct dc_env *env, struct dc_error *err, const
  */
 uint16_t dc_uint16_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base);
 
+
+/**
+ *
+ * @param env
+ * @param err
+ * @param str
+ * @param base
+ * @return
+ */
+long dc_long_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base);
+
+
 /**
  *
  * @param env
@@ -67,6 +79,16 @@ uint16_t dc_uint16_from_str(const struct dc_env *env, struct dc_error *err, cons
  * @return
  */
 in_port_t dc_in_port_t_from_str(const struct dc_env *env, struct dc_error *err, const char *str, int base);
+
+
+/**
+ *
+ * @param env
+ * @param err
+ * @param str
+ * @return
+ */
+time_t dc_time_t_from_str(const struct dc_env *env, struct dc_error *err, const char *str);
 
 
 #ifdef __cplusplus

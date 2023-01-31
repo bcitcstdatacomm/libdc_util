@@ -21,7 +21,7 @@
 #include <stdint.h>
 
 
-ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len)
+ssize_t dc_write_fully(const struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len)
 {
     ssize_t total_bytes_write = 0;
 
@@ -42,7 +42,7 @@ ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const v
     return total_bytes_write;
 }
 
-ssize_t dc_read_fully(struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len)
+ssize_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len)
 {
     ssize_t total_bytes_read = 0;
 

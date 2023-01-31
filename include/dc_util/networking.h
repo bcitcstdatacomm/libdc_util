@@ -65,8 +65,8 @@ void dc_setsockopt_socket_SNDBUF(const struct dc_env *env, struct dc_error *err,
 void dc_setsockopt_socket_SNDLOWAT(const struct dc_env *env, struct dc_error *err, int socket_fd, int value);
 void dc_setsockopt_socket_SNDTIMEO(const struct dc_env *env, struct dc_error *err, int socket_fd, time_t seconds, long useconds);
 void dc_setsockopt_socket_MAXCONN(const struct dc_env *env, struct dc_error *err, int socket_fd, int value);
-char *dc_get_ip_addresses_by_interface(struct dc_env *env, struct dc_error *err, const char *interface_name, int family);
-char *dc_get_default_interface(struct dc_env *env, struct dc_error *err, int family);
+char *dc_get_ip_addresses_by_interface(const struct dc_env *env, struct dc_error *err, const char *interface_name, int family);
+char *dc_get_default_interface(const struct dc_env *env, struct dc_error *err, int family);
 
 
 #ifdef __cplusplus

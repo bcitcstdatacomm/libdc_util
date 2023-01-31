@@ -37,7 +37,7 @@ extern "C" {
  * @param nbytes
  * @return
  */
-ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len);
+ssize_t dc_write_fully(const struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len);
 
 /**
  *
@@ -48,7 +48,7 @@ ssize_t dc_write_fully(struct dc_env *env, struct dc_error *err, int fd, const v
  * @param len
  * @return
  */
-ssize_t dc_read_fully(struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len);
+ssize_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len);
 
 
 #ifdef __cplusplus
