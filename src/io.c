@@ -23,7 +23,10 @@
 
 ssize_t dc_write_fully(const struct dc_env *env, struct dc_error *err, int fd, const void *buffer, size_t len)
 {
-    ssize_t total_bytes_write = 0;
+    ssize_t total_bytes_write;
+
+    DC_TRACE(env);
+    total_bytes_write = 0;
 
     while(total_bytes_write < (ssize_t)len)
     {
@@ -36,6 +39,12 @@ ssize_t dc_write_fully(const struct dc_env *env, struct dc_error *err, int fd, c
             break;
         }
 
+        if(bytes_written == 0)
+        {
+            DC_ERROR_RAISE_SYSTEM(err, "File closed while writing", 1);
+            break;
+        }
+
         total_bytes_write += bytes_written;
     }
 
@@ -44,9 +53,12 @@ ssize_t dc_write_fully(const struct dc_env *env, struct dc_error *err, int fd, c
 
 ssize_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, void *buffer, size_t len)
 {
-    ssize_t total_bytes_read = 0;
+    ssize_t total_bytes_read;
 
-    while (total_bytes_read < (ssize_t)len)
+    DC_TRACE(env);
+    total_bytes_read = 0;
+
+    while(total_bytes_read < (ssize_t)len)
     {
         ssize_t bytes_read;
 
@@ -54,6 +66,12 @@ ssize_t dc_read_fully(const struct dc_env *env, struct dc_error *err, int fd, vo
 
         if(dc_error_has_error(err))
         {
+            break;
+        }
+
+        if(bytes_read == 0)
+        {
+            DC_ERROR_RAISE_SYSTEM(err, "File closed while reading", 1);
             break;
         }
 
