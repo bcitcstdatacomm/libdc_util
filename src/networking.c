@@ -660,7 +660,85 @@ char *dc_get_default_interface(const struct dc_env *env, struct dc_error *err, i
         dc_freeifaddrs(env, ifaddr);
     }
 
-
     return name;
 }
 
+ssize_t dc_sendmsg_fully(const struct dc_env *env, struct dc_error *err, int sockfd, const struct msghdr *msg, int flags)
+{
+    char   *buf;
+    size_t  len;
+    ssize_t total_sent;
+
+    buf        = msg->msg_iov->iov_base;
+    len        = msg->msg_iov->iov_len;
+    total_sent = 0;
+
+    while(total_sent < msg->msg_iovlen)
+    {
+        ssize_t sent;
+
+        sent = dc_sendmsg(env, err, sockfd, msg, flags);
+
+        if(dc_error_has_error(err))
+        {
+            if(dc_error_is_errno(err, EAGAIN) || dc_error_is_errno(err, EWOULDBLOCK))
+            {
+                continue;
+            }
+            else
+            {
+                break;
+            }
+        }
+        else
+        {
+            total_sent += sent;
+            buf += sent;
+            len -= sent;
+            msg->msg_iov->iov_base = buf;
+            msg->msg_iov->iov_len = len;
+        }
+    }
+
+    return total_sent;
+}
+
+ssize_t dc_recvmsg_fully(const struct dc_env *env, struct dc_error *err, int sockfd, struct msghdr *msg, int flags)
+{
+    ssize_t recv;
+    size_t  total_received;
+    char   *buf;
+    size_t  len;
+
+    total_received = 0;
+    buf            = msg->msg_iov->iov_base;
+    len            = msg->msg_iov->iov_len;
+
+    while(total_received < len)
+    {
+        recv = dc_recvmsg(env, err, sockfd, msg, flags);
+
+        if(dc_error_has_error(err))
+        {
+            if(dc_error_is_errno(err, EAGAIN) || dc_error_is_errno(err, EWOULDBLOCK))
+            {
+                break;
+            }
+        }
+        else if (recv == 0)
+        {
+            DC_ERROR_RAISE_SYSTEM(err, "", 1);
+            break;
+        }
+        else
+        {
+            total_received += (size_t)recv;
+            buf += recv;
+            len -= recv;
+            msg->msg_iov->iov_base = buf;
+            msg->msg_iov->iov_len = len;
+        }
+    }
+
+    return (ssize_t)total_received;
+}
