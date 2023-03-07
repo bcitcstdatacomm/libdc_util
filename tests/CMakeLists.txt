@@ -26,6 +26,7 @@ find_library(LIBDC_ENV dc_env REQUIRED)
 find_library(LIBDC_C dc_c REQUIRED)
 find_library(LIBDC_POSIX dc_posix REQUIRED)
 find_library(LIBDC_UNIX dc_unix REQUIRED)
+find_library(LIBBSD bsd)
 
 target_link_libraries(libdc_util_test PRIVATE ${LIBCGREEN})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_ERROR})
@@ -33,6 +34,10 @@ target_link_libraries(libdc_util_test PRIVATE ${LIBDC_ENV})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_C})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_POSIX})
 target_link_libraries(libdc_util_test PRIVATE ${LIBDC_UNIX})
+
+if(LIBBSD)
+    target_link_libraries(libdc_util_test PUBLIC ${LIBBSD})
+endif()
 
 add_test(NAME libdc_util_test COMMAND libdc_posix_test)
 
